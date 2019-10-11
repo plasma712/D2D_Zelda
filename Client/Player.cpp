@@ -246,6 +246,7 @@ FsmPair CPlayer::FSM()
 	if (m_pKeyMgr->KeyPressing(KEY_A))
 	{
 		m_FsmPair.first = BehaviorAttack;
+		fAniMationSpeedControl = 1.75f;
 		TimeCheck += m_pTimeMgr->GetDeltaTime();
 		if (m_tFrame.fStartFrame > 0 && MotionSkip == false)
 		{
@@ -271,6 +272,7 @@ FsmPair CPlayer::FSM()
 		TimeCheck = 0.f;
 		AttackMotion = false;
 		MotionSkip = false;
+		fAniMationSpeedControl = 1.f;
 	}
 
 
@@ -423,19 +425,19 @@ void CPlayer::BeHaviorFsm(eBehavior _enum, int _FrameMax)
 
 void CPlayer::ArrowMove(FsmPair _m_FsmPair)
 {
-	switch (_m_FsmPair.first)
+	switch (_m_FsmPair.second)
 	{
 	case ArrowUP:
-		m_tInfo.vPos += { 1,0,0 };
+		m_tInfo.vPos += { 0,1.f,0 };
 		break;
 	case ArrowDOWN:
-		m_tInfo.vPos += { -1,0,0 };
+		m_tInfo.vPos += { 0, -1.f, 0 };
 		break;
 	case ArrowRIGHT:
-		m_tInfo.vPos += { 0,-1,0 };
+		m_tInfo.vPos += { 1.f, 0, 0 };
 		break;
 	case ArrowLEFT:
-		m_tInfo.vPos += { 0, 1,0 };
+		m_tInfo.vPos += { -1.f, 0, 0 };
 		break;
 	}
 }
