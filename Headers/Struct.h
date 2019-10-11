@@ -61,5 +61,10 @@ typedef struct tagInfo
 class CTerrain;
 typedef pair<eColDir, CTerrain*> TerrainPair;
 
+
+//////////////////////////////////////////////////
+
+typedef pair<eBehavior, eArrow> FsmPair;
+
 #define __STRUCT_H__
 #endif

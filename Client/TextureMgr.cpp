@@ -15,10 +15,7 @@ CTextureMgr::~CTextureMgr()
 	Release();
 }
 
-const TEX_INFO* CTextureMgr::GetTexInfo(
-	const wstring& wstrObjectKey, 
-	const wstring& wstrStateKey, 
-	int iIndex)
+const TEX_INFO* CTextureMgr::GetTexInfo(const wstring& wstrObjectKey, const wstring& wstrStateKey, int iIndex)
 {
 	auto iter_find = m_mapTexture.find(wstrObjectKey);
 

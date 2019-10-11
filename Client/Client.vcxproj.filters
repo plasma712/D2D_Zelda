@@ -34,9 +34,6 @@
     <Filter Include="98.Managers\02.TextureMgr\00.Texture\00.SingleTexture">
       <UniqueIdentifier>{62257270-c8a5-41e8-bdd2-03ca48a10e91}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.GameObject\02.Mouse">
-      <UniqueIdentifier>{d50fc86f-e29a-4a52-96a8-3c663586fc0f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.GameObject\01.Terrain">
       <UniqueIdentifier>{4dd87a36-c6ba-40ee-9c8d-d91d3f900332}</UniqueIdentifier>
     </Filter>
@@ -72,6 +69,36 @@
     </Filter>
     <Filter Include="98.Managers\10.Collider">
       <UniqueIdentifier>{708640c1-1313-442a-ab87-c5d6170025bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\03.Effect">
+      <UniqueIdentifier>{f1e4979e-f1ae-40d7-993f-8d746aa586cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\02.Mouse">
+      <UniqueIdentifier>{d50fc86f-e29a-4a52-96a8-3c663586fc0f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\03.Effect\01.Player">
+      <UniqueIdentifier>{8c0bd7f9-a1b0-4602-94c0-fc83f91f170d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="98.Managers\11.Bridge">
+      <UniqueIdentifier>{8eca5e3b-619c-47e8-a3e7-843b6442a5f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="98.Managers\11.Bridge\00.Effect">
+      <UniqueIdentifier>{43e2e6d2-1131-4d01-940a-f9e579876db3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="98.Managers\11.Bridge\01.EffectAttack">
+      <UniqueIdentifier>{4545b79b-1968-49ec-970b-1b0dbee1481f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="98.Managers\11.Bridge\00.Effect\00.NormalEffect">
+      <UniqueIdentifier>{88bbe6eb-3db9-4580-8028-3720b3ebf478}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="98.Managers\11.Bridge\00.Effect\01.BuffEffect">
+      <UniqueIdentifier>{4f8a5f94-a632-487e-a398-67ddb32be106}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="98.Managers\11.Bridge\01.EffectAttack\00.Animate">
+      <UniqueIdentifier>{7742cfed-2a27-4361-b1f6-d545a16c85d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="98.Managers\11.Bridge\01.EffectAttack\01.NoAnimate">
+      <UniqueIdentifier>{2a55f98e-4a51-4c6c-9339-5657ed82e888}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -153,6 +180,27 @@
     <ClInclude Include="ColliderMgr.h">
       <Filter>98.Managers\10.Collider</Filter>
     </ClInclude>
+    <ClInclude Include="PlayerEffect.h">
+      <Filter>01.GameObject\03.Effect\01.Player</Filter>
+    </ClInclude>
+    <ClInclude Include="NormalEffect.h">
+      <Filter>98.Managers\11.Bridge</Filter>
+    </ClInclude>
+    <ClInclude Include="NoAnimateIMP.h">
+      <Filter>98.Managers\11.Bridge</Filter>
+    </ClInclude>
+    <ClInclude Include="EffectIMP.h">
+      <Filter>98.Managers\11.Bridge</Filter>
+    </ClInclude>
+    <ClInclude Include="Effect.h">
+      <Filter>98.Managers\11.Bridge</Filter>
+    </ClInclude>
+    <ClInclude Include="BuffEffect.h">
+      <Filter>98.Managers\11.Bridge</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimateIMP.h">
+      <Filter>98.Managers\11.Bridge</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -226,6 +274,27 @@
     </ClCompile>
     <ClCompile Include="ColliderMgr.cpp">
       <Filter>98.Managers\10.Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerEffect.cpp">
+      <Filter>01.GameObject\03.Effect\01.Player</Filter>
+    </ClCompile>
+    <ClCompile Include="NormalEffect.cpp">
+      <Filter>98.Managers\11.Bridge</Filter>
+    </ClCompile>
+    <ClCompile Include="NoAnimateIMP.cpp">
+      <Filter>98.Managers\11.Bridge</Filter>
+    </ClCompile>
+    <ClCompile Include="EffectIMP.cpp">
+      <Filter>98.Managers\11.Bridge</Filter>
+    </ClCompile>
+    <ClCompile Include="Effect.cpp">
+      <Filter>98.Managers\11.Bridge</Filter>
+    </ClCompile>
+    <ClCompile Include="BuffEffect.cpp">
+      <Filter>98.Managers\11.Bridge</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimateIMP.cpp">
+      <Filter>98.Managers\11.Bridge</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

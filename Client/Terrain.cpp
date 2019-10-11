@@ -83,7 +83,7 @@ void CTerrain::Render()
 			m_vecTile[i]->vSize.x,
 			m_vecTile[i]->vSize.y, 0.f);
 		D3DXMatrixTranslation(&matTrans,
-			m_vecTile[i]->vPos.x - CScrollMgr::GetScrollPos().x,
+			m_vecTile[i]->vPos.x + TILECX / 2 - CScrollMgr::GetScrollPos().x,
 			m_vecTile[i]->vPos.y - CScrollMgr::GetScrollPos().y,
 			0.f);
 

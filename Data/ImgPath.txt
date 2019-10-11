@@ -38,3 +38,15 @@ Throw|Right|5|..\Texture\Player\Action\Throw\Right\Throw_Right_0%d.png
 Terrain|Tile|38|..\Texture\Stage\Terrain\Tile\Tile%d.png
 Dungen|Tile|23|..\Texture\MapBlock\Dungen\Tile%d.png
 Terrain|Object|1|..\Texture\Stage\Terrain\Object\Object%d.png
+Attack|Back|3|..\Texture\Player\Action\Attack\Back\Weapon\Attack_Back_Weapon_0%d.png
+AttackEffect|Back|1|..\Texture\Player\Action\Attack\Back\Attack_Back_Effect.png
+AttackMotion|Back|7|..\Texture\Player\Action\Attack\Back\Motion\OneHead_Sword_Attack_Back_0%d.png
+Attack|Front|3|..\Texture\Player\Action\Attack\Front\Weapon\Attack_Front_Weapon_0%d.png
+AttackEffect|Front|1|..\Texture\Player\Action\Attack\Front\Attack_Front_Effect.png
+AttackMotion|Front|7|..\Texture\Player\Action\Attack\Front\Motion\OneHead_Sword_Attack_Front_0%d.png
+Attack|Left|3|..\Texture\Player\Action\Attack\Right\Weapon\Attack_Right_Weapon_0%d.png
+AttackEffect|Right|1|..\Texture\Player\Action\Attack\Right\Attack_Right_Effect.png
+AttackMotion|Right|7|..\Texture\Player\Action\Attack\Right\Motion\OneHead_Sword_Attack_Right_0%d.png
+Attack|Right|3|..\Texture\Player\Action\Attack\Left\Weapon\Attack_Left_Weapon_0%d.png
+AttackEffect|Left|1|..\Texture\Player\Action\Attack\Left\Attack_Left_Effect.png
+AttackMotion|Left|7|..\Texture\Player\Action\Attack\Left\Motion\OneHead_Sword_Attack_Left_0%d.png

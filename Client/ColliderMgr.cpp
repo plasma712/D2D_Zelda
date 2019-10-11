@@ -72,12 +72,12 @@ TerrainPair CColliderMgr::TileCollision(vector<CTerrain*>* vtile, CPlayer * play
 			if (player->GetTileInfo().vPos.x < ColObjvec.back()->GetTileInfo().vPos.x)
 			{
 				player->GetTileInfo().vPos.x -= ColRectvec.back().right;
-				CollDir = Right;
+				CollDir = ColRight;
 			}
 			else
 			{
 				player->GetTileInfo().vPos.x += ColRectvec.back().right;
-				CollDir = Left;
+				CollDir = ColLeft;
 			}
 			//cout << " X 충돌 판정 " << endl;
 			//m_fSpeedX = 0;
@@ -88,11 +88,11 @@ TerrainPair CColliderMgr::TileCollision(vector<CTerrain*>* vtile, CPlayer * play
 			if (player->GetTileInfo().vPos.y < ColObjvec.back()->GetTileInfo().vPos.y)
 			{
 				player->GetTileInfo().vPos.y -= ColRectvec.back().bottom;		//player가 더 위에 있을때는 위로 민다
-				CollDir = Down;
+				CollDir = ColDown;
 			}
 			else
 			{
-				CollDir = Up;
+				CollDir = ColUp;
 				player->GetTileInfo().vPos.y += ColRectvec.back().bottom;		//player가 더 아래 있을때는 아래로 민다/
 
 			}

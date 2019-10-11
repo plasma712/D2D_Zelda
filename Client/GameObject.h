@@ -22,6 +22,7 @@ protected:
 	CTextureMgr*	m_pTextureMgr;
 	CKeyMgr*		m_pKeyMgr;
 	CTimeMgr*		m_pTimeMgr;
+	CObjectMgr*		m_pObjectMgr;
 
 	bool			m_bIsInit;	
 

@@ -7,6 +7,7 @@ CGameObject::CGameObject()
 	m_pTextureMgr(CTextureMgr::GetInstance()),
 	m_pKeyMgr(CKeyMgr::GetInstance()),
 	m_pTimeMgr(CTimeMgr::GetInstance()),
+	m_pObjectMgr(CObjectMgr::GetInstance()),
 	m_bIsInit(false)
 {
 	m_tRECT = {};
@@ -51,7 +52,8 @@ void CGameObject::UpdateRECT()
 
 RECT CGameObject::GetRect()
 {
-	RECT rc = {
+	RECT rc = 
+	{
 		tileInfo.vPos.x - TILECX / 2,
 		tileInfo.vPos.y - TILECY / 2,
 		tileInfo.vPos.x + TILECX / 2,

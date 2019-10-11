@@ -11,11 +11,25 @@ enum eBlockType
 enum eColDir
 {
 	ColDirNONE,
-	Up,
-	Down,
-	Right,
-	Left	
+	ColUp,
+	ColDown,
+	ColRight,
+	ColLeft	
 };
 
+enum eBehavior
+{
+	BehaviorIdle,
+	BehaviorWalk,
+	BehaviorAttack
+};
+
+enum eArrow
+{
+	ArrowUP,
+	ArrowDOWN,
+	ArrowRIGHT,
+	ArrowLEFT
+};
 #define __ENUM_H__
 #endif

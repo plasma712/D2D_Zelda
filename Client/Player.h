@@ -46,5 +46,50 @@ public:
 	void SetColData(TerrainPair _cp);
 	void Physics();
 
+
+///////////////////
+public:
+	
+	const TEX_INFO* pTexInfo;
+	void AnimationPicture();
+	FsmPair m_FsmPair;
+	FsmPair FSM();
+	void FSMANI(FsmPair _m_FsmPair);
+
+	const TEX_INFO* TextureCall
+	(
+		const wstring& wstrObjectKey,
+		const wstring& wstrStateKey,
+		int iIndex
+	);
+
+	wstring m_wstrObjectKey;
+	wstring m_wstrStateKey;
+///////////////////////////////////////////////////
+
+	void BeIdle();
+	void BeWalk();
+	void BeAttack();
+	void BeAttackEffect();
+
+	// 이펙트 관리.
+
+///////////////////////////////////////////////////
+//m_FsmPair 관리 함수.
+	void Arrow();
+	void BeHaviorFsm(eBehavior _enum,int _FrameMax);
+	void ArrowMove(FsmPair _m_FsmPair);
+#pragma region 중요포인터
+	bool PushPullCheck = false;
+	bool NotBeHavior = false;
+	bool AttackMotion = false;
+	bool MotionSkip = false;
+
+	bool FrameMotionCheck = false;
+	float fAniMationSpeedControl;
+	//float TimeCheck = 0.f;
+
+#pragma endregion
+
 };
 

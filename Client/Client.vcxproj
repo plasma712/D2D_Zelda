@@ -148,10 +148,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AnimateIMP.h" />
     <ClInclude Include="AstarMgr.h" />
+    <ClInclude Include="BuffEffect.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="ColliderMgr.h" />
     <ClInclude Include="DeviceMgr.h" />
+    <ClInclude Include="Effect.h" />
+    <ClInclude Include="EffectIMP.h" />
     <ClInclude Include="FrameMgr.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="KeyMgr.h" />
@@ -160,8 +164,11 @@
     <ClInclude Include="MatrixMaker.h" />
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="MultiTexture.h" />
+    <ClInclude Include="NoAnimateIMP.h" />
+    <ClInclude Include="NormalEffect.h" />
     <ClInclude Include="ObjectMgr.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerEffect.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneMgr.h" />
@@ -176,10 +183,14 @@
     <ClInclude Include="TimeMgr.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AnimateIMP.cpp" />
     <ClCompile Include="AstarMgr.cpp" />
+    <ClCompile Include="BuffEffect.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="ColliderMgr.cpp" />
     <ClCompile Include="DeviceMgr.cpp" />
+    <ClCompile Include="Effect.cpp" />
+    <ClCompile Include="EffectIMP.cpp" />
     <ClCompile Include="FrameMgr.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="KeyMgr.cpp" />
@@ -188,8 +199,11 @@
     <ClCompile Include="MatrixMaker.cpp" />
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="MultiTexture.cpp" />
+    <ClCompile Include="NoAnimateIMP.cpp" />
+    <ClCompile Include="NormalEffect.cpp" />
     <ClCompile Include="ObjectMgr.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerEffect.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneMgr.cpp" />
     <ClCompile Include="ScrollMgr.cpp" />
