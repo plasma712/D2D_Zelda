@@ -1,6 +1,7 @@
 #pragma once
 #include "GameObject.h"
 
+class CTerrain;
 class CAstarMgr;
 class CPlayer :
 	public CGameObject
@@ -89,7 +90,35 @@ public:
 	float fAniMationSpeedControl;
 	//float TimeCheck = 0.f;
 
+
+	// Terrain 맵데이터 가지고 올수있는지 확인차원.
+
+
+	void Temp();
+	CTerrain*			m_pTerrain;
+
+
+	void PlayerCollider();
+	float m_fSpeed;
+
+	// 블럭마다의 Rect값 만들기.
+
+	RECT TerrainGet(TILE_INFO* _vecTile);
+	void PlayerCollider2(RECT _Player, RECT _Tile);
+	RECT RectPlayer(INFO* m_tInfo);
+
+	//bool Crush = false;
+
+	void ColTerPlayer(FsmPair _m_FsmPair);
+
 #pragma endregion
+
+	////////////////////////
+
+#pragma region 맵충돌 
+	RECT ActionPlug;
+	bool bAction = false;
+#pragma  endregion
 
 };
 

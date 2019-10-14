@@ -31,5 +31,7 @@ enum eArrow
 	ArrowRIGHT,
 	ArrowLEFT
 };
+enum OBJECT_TYPE { TERRAIN, PLAYER, MONSTER, EFFECT, UI, END };
+
 #define __ENUM_H__
 #endif

@@ -11,7 +11,8 @@ public:
 	~CColliderMgr();
 	//vector<CTerrain*>			m_vecTile;
 
-	TerrainPair TileCollision(vector<CTerrain*>* vtile, CPlayer* player);
-
+	//TerrainPair TileCollision(vector<CTerrain*>* vtile, CPlayer* player);
+	static void CollisionRect(const CObjectMgr& dstLst, const CObjectMgr& srcLst);
+	CObjectMgr*		m_pObjectMgr;
 };
 

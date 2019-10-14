@@ -36,11 +36,11 @@ HRESULT CStage::Initialize()
 	FAILED_CHECK_MSG_RETURN(hr, L"LoadFromImgPathFile Failed", E_FAIL);
 
 	// Terrain
-	hr = m_pObjectMgr->AddObject(CObjectMgr::TERRAIN, CTerrain::Create());
+	hr = m_pObjectMgr->AddObject(TERRAIN, CTerrain::Create());
 	FAILED_CHECK_MSG_RETURN(hr, L"Terrain Create Failed", E_FAIL);
 
 	// Player
-	hr = m_pObjectMgr->AddObject(CObjectMgr::PLAYER, CPlayer::Create());
+	hr = m_pObjectMgr->AddObject(PLAYER, CPlayer::Create());
 	FAILED_CHECK_MSG_RETURN(hr, L"Player Create Failed", E_FAIL);
 	
 	dynamic_cast<CTerrain*>(m_pObjectMgr->GetTerrain())->SetPlayerPointer(dynamic_cast<CPlayer*>(m_pObjectMgr->GetPlayer()));

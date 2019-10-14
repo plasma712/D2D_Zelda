@@ -6,7 +6,6 @@ class CObjectMgr
 	DECLARE_SINGLETON(CObjectMgr)
 
 public:
-	enum OBJECT_TYPE { TERRAIN, PLAYER, MONSTER, EFFECT, UI, END };
 
 private:
 	CObjectMgr();
@@ -25,7 +24,7 @@ public:
 private:
 	void Release();
 
-private:
+public:
 	typedef list<CGameObject*>	OBJLIST;
 	OBJLIST	m_ObjectLst[END];
 };

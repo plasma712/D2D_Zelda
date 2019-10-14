@@ -57,13 +57,13 @@ int CTerrain::Update()
 	//if ((float)WINCY < CMouse::GetMouse().y)
 	//	CScrollMgr::SetScrollPos(D3DXVECTOR3(0.f, fSpeed, 0.f));
 
-	TerrainPair temp = CollMgr->TileCollision(&m_vecTile2, m_pPlayer);
-	
-	if (temp.second != nullptr)
-	{
-		m_pPlayer->SetColData(temp);
-		//temp.second->
-	}
+	//TerrainPair temp = CollMgr->TileCollision(&m_vecTile2, m_pPlayer);
+	//
+	//if (temp.second != nullptr)
+	//{
+	//	m_pPlayer->SetColData(temp);
+	//	//temp.second->
+	//}
 
 	return NO_EVENT;
 }

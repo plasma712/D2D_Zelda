@@ -38,7 +38,7 @@ int CPlayer::Update()
 	//MovePath();
 	//Physics();
 	FSMANI(m_FsmPair);
-
+	PlayerCollider();
 
 	return NO_EVENT;
 }
@@ -59,16 +59,19 @@ void CPlayer::LateUpdate()
 void CPlayer::Render()
 {
 	AnimationPicture();
+
+
 }
 
 HRESULT CPlayer::Initialize()
 {
+	Temp();
 	m_tInfo.vPos = { 430.f, 300.f, 0.f };
 	m_tInfo.vSize = { 2.5f, 2.5f, 0.f };
 
 	m_tFrame.fStartFrame = 0.f;
 	m_tFrame.fMaxFrameCnt = 4.f; // 계속 FSM함수에서 바꿔야함... 흠...
-	m_fSpeedX = 1.f;
+	m_fSpeed = 1.f;
 
 	m_FsmPair.first = BehaviorIdle;
 	m_FsmPair.second = ArrowDOWN;
@@ -276,6 +279,16 @@ FsmPair CPlayer::FSM()
 	}
 
 
+	if (m_pKeyMgr->KeyPressing(KEY_D))
+	{
+
+	}
+
+	if (m_pKeyMgr->KeyUp(KEY_D))
+	{
+
+	}
+
 	return m_FsmPair;
 }
 
@@ -342,16 +355,16 @@ void CPlayer::BeAttackEffect()
 	switch (m_FsmPair.second)
 	{
 	case ArrowUP:
-		TempInfo.vPos = { 0,70.f,0 };
+		TempInfo.vPos = { 0,60.f,0 };
 		break;
 	case ArrowDOWN:
-		TempInfo.vPos = { 0,-70.f,0 };
+		TempInfo.vPos = { 0,-60.f,0 };
 		break;
 	case ArrowRIGHT:
-		TempInfo.vPos = { 70.f,0,0 };
+		TempInfo.vPos = { 60.f,0,0 };
 		break;
 	case ArrowLEFT:
-		TempInfo.vPos = { -70.f,0,0 };
+		TempInfo.vPos = { -60.f,0,0 };
 		break;
 	default:
 		break;
@@ -359,7 +372,7 @@ void CPlayer::BeAttackEffect()
 
 	CNormalEffect* pEffect = CNormalEffect::Create(pImp, (this->m_tInfo.vPos + TempInfo.vPos), { 2.0f,2.0f,2.0f });
 	//CBuffEffect* pEffect = CBuffEffect::Create(pImp);		
-	m_pObjectMgr->AddObject(CObjectMgr::EFFECT, pEffect);
+	m_pObjectMgr->AddObject(EFFECT, pEffect);
 
 	////////////////////
 
@@ -420,25 +433,135 @@ void CPlayer::BeHaviorFsm(eBehavior _enum, int _FrameMax)
 	m_FsmPair.first = _enum;
 	//m_tFrame.fStartFrame = 0.f;
 	m_tFrame.fMaxFrameCnt = _FrameMax;
-
 }
 
 void CPlayer::ArrowMove(FsmPair _m_FsmPair)
 {
+	if (MotionSkip != true )
+	{
+		switch (_m_FsmPair.second)
+		{
+		case ArrowUP:
+			m_tInfo.vPos += { 0, m_fSpeed, 0 };
+			break;
+		case ArrowDOWN:
+			m_tInfo.vPos += { 0, -m_fSpeed, 0 };
+			break;
+		case ArrowRIGHT:
+			m_tInfo.vPos += { m_fSpeed, 0, 0 };
+			break;
+		case ArrowLEFT:
+			m_tInfo.vPos += { -m_fSpeed, 0, 0 };
+			break;
+		}
+	}
+}
+
+void CPlayer::Temp()
+{
+	m_pTerrain = dynamic_cast<CTerrain*>(CObjectMgr::GetInstance()->GetTerrain());
+
+	const vector<TILE_INFO*>& vecTile = m_pTerrain->GetVecTile();
+
+	for (int k = 0; k < vecTile.size(); k++)
+	{
+		if (vecTile[k]->byOption == 1)
+		{
+			cout << "K :" << k << endl;
+			cout << "byDrawID :" << vecTile[k]->byDrawID << endl;
+			cout << "byOption :" << vecTile[k]->byOption << endl;
+			cout << "iMyIndex :" << vecTile[k]->iMyIndex << endl;
+			cout << "iParentIndex :" << vecTile[k]->iParentIndex << endl;
+			cout << "vPos		:" << vecTile[k]->vPos << endl;
+
+			RECT ColTemp = TerrainGet(vecTile[k]);
+			cout << endl;
+			cout <<"Left: "<< ColTemp.left << endl;
+			cout <<"Right: "<< ColTemp.right << endl;
+			cout <<"Up: "<< ColTemp.top<< endl;
+			cout <<"Bottom: "<< ColTemp.bottom << endl;
+			cout << "--------------------------------------------------" << endl;
+			cout << "--------------------------------------------------" << endl;
+		}
+	}
+
+
+}
+
+void CPlayer::PlayerCollider()
+{
+	m_pTerrain = dynamic_cast<CTerrain*>(CObjectMgr::GetInstance()->GetTerrain());
+
+	const vector<TILE_INFO*>& vecTile = m_pTerrain->GetVecTile();
+
+	RECT ColTemp;
+	
+	for (int k = 0; k < vecTile.size(); k++)
+	{
+		if (vecTile[k]->byOption == 1)
+		{
+			ColTemp = TerrainGet(vecTile[k]);
+			//cout << "가나다라" << endl;
+			PlayerCollider2(RectPlayer(&this->m_tInfo), ColTemp);
+		}
+	}
+
+}
+
+RECT CPlayer::TerrainGet(TILE_INFO* _vecTile)
+{
+	RECT rc =
+	{
+		_vecTile->vPos.x - TILECX,
+		_vecTile->vPos.y - TILECY * 2,
+		_vecTile->vPos.x + TILECX ,
+		_vecTile->vPos.y + TILECY * 2
+	};
+	return rc;
+}
+
+void CPlayer::PlayerCollider2(RECT _Player, RECT _Tile)
+{
+	RECT rc = {};
+	if (IntersectRect(&rc, &(_Player), &(_Tile)))
+	{
+		ColTerPlayer(m_FsmPair);
+	}
+	else
+	{
+		//Crush = false;
+	}
+}
+
+RECT CPlayer::RectPlayer(INFO * m_tInfo)
+{
+	RECT rc =
+	{
+		m_tInfo->vPos.x - TILECX / 2,
+		m_tInfo->vPos.y - TILECY / 2,
+		m_tInfo->vPos.x + TILECX / 2,
+		m_tInfo->vPos.y + TILECY / 2
+	};
+	return rc;
+}
+
+void CPlayer::ColTerPlayer(FsmPair _m_FsmPair)
+{
 	switch (_m_FsmPair.second)
 	{
 	case ArrowUP:
-		m_tInfo.vPos += { 0,1.f,0 };
+		m_tInfo.vPos += { 0, -m_fSpeed, 0 };
 		break;
 	case ArrowDOWN:
-		m_tInfo.vPos += { 0, -1.f, 0 };
+		m_tInfo.vPos += { 0, m_fSpeed, 0 };
 		break;
 	case ArrowRIGHT:
-		m_tInfo.vPos += { 1.f, 0, 0 };
+		m_tInfo.vPos += { -m_fSpeed, 0, 0 };
 		break;
 	case ArrowLEFT:
-		m_tInfo.vPos += { -1.f, 0, 0 };
+		m_tInfo.vPos += { m_fSpeed, 0, 0 };
 		break;
 	}
 }
+
 

@@ -58,6 +58,7 @@ typedef struct tagInfo
 	D3DXMATRIX matWorld; // 월드행렬 = 크기행렬 * 자전행렬 * 이동행렬 * 공전행렬 * 부모행렬
 }INFO;
 
+
 class CTerrain;
 typedef pair<eColDir, CTerrain*> TerrainPair;
 

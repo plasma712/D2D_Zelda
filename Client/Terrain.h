@@ -40,7 +40,7 @@ private:
 public:
 	static CTerrain* Create();
 
-private:
+public:
 	vector<TILE_INFO*>			m_vecTile;
 	vector<list<TILE_INFO*>>	m_vecGraph;	
 
@@ -53,6 +53,11 @@ public:
 	void Collider(const D3DXVECTOR3& vPos, BYTE byDrawID, BYTE byOption);
 	CColliderMgr * CollMgr;
 	CPlayer * m_pPlayer;
+
+
+
+public:
+
 
 };
 
