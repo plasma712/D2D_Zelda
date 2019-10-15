@@ -118,6 +118,9 @@ public:
 #pragma region ∏ √Êµπ 
 	RECT ActionPlug;
 	bool bAction = false;
+	void vActionPlug(INFO * m_tInfo, FsmPair _m_FsmPair);
+
+	void ActionPlugCollider(RECT _ActionPlug, RECT _Tile, TILE_INFO* _vecTile);
 #pragma  endregion
 
 };

@@ -21,7 +21,9 @@ enum eBehavior
 {
 	BehaviorIdle,
 	BehaviorWalk,
-	BehaviorAttack
+	BehaviorAttack,
+	BehaviorPull,
+	BehaviorPush
 };
 
 enum eArrow

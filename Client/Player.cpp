@@ -240,7 +240,7 @@ FsmPair CPlayer::FSM()
 
 	/////////////////////////////////////////////////////////////////
 	if (m_pKeyMgr->KeyUp(KEY_UP) || m_pKeyMgr->KeyUp(KEY_DOWN)
-		|| m_pKeyMgr->KeyUp(KEY_RIGHT) || m_pKeyMgr->KeyUp(KEY_LEFT))
+		|| m_pKeyMgr->KeyUp(KEY_RIGHT) || m_pKeyMgr->KeyUp(KEY_LEFT)) 
 	{
 		BeHaviorFsm(BehaviorIdle, 4);
 		TimeCheck = 0.f;
@@ -281,12 +281,13 @@ FsmPair CPlayer::FSM()
 
 	if (m_pKeyMgr->KeyPressing(KEY_D))
 	{
-
+		bAction = true;
+		vActionPlug(&this->m_tInfo, m_FsmPair);
 	}
 
 	if (m_pKeyMgr->KeyUp(KEY_D))
 	{
-
+		bAction = false;
 	}
 
 	return m_FsmPair;
@@ -304,6 +305,12 @@ void CPlayer::FSMANI(FsmPair _m_FsmPair)
 		break;
 	case BehaviorAttack:
 		m_wstrObjectKey = L"AttackMotion";
+		break;
+	case  BehaviorPull:
+		m_wstrObjectKey = L"Pull";
+		break;
+	case BehaviorPush:
+		m_wstrObjectKey = L"Push";
 		break;
 	}
 
@@ -330,17 +337,6 @@ const TEX_INFO * CPlayer::TextureCall(const wstring & wstrObjectKey, const wstri
 	return m_pTextureMgr->GetTexInfo(wstrObjectKey, wstrStateKey, (int)m_tFrame.fStartFrame);
 }
 
-void CPlayer::BeIdle()
-{
-}
-
-void CPlayer::BeWalk()
-{
-}
-
-void CPlayer::BeAttack()
-{
-}
 
 void CPlayer::BeAttackEffect()
 {
@@ -437,7 +433,7 @@ void CPlayer::BeHaviorFsm(eBehavior _enum, int _FrameMax)
 
 void CPlayer::ArrowMove(FsmPair _m_FsmPair)
 {
-	if (MotionSkip != true )
+	if (MotionSkip != true)
 	{
 		switch (_m_FsmPair.second)
 		{
@@ -476,10 +472,10 @@ void CPlayer::Temp()
 
 			RECT ColTemp = TerrainGet(vecTile[k]);
 			cout << endl;
-			cout <<"Left: "<< ColTemp.left << endl;
-			cout <<"Right: "<< ColTemp.right << endl;
-			cout <<"Up: "<< ColTemp.top<< endl;
-			cout <<"Bottom: "<< ColTemp.bottom << endl;
+			cout << "Left: " << ColTemp.left << endl;
+			cout << "Right: " << ColTemp.right << endl;
+			cout << "Up: " << ColTemp.top << endl;
+			cout << "Bottom: " << ColTemp.bottom << endl;
 			cout << "--------------------------------------------------" << endl;
 			cout << "--------------------------------------------------" << endl;
 		}
@@ -495,7 +491,7 @@ void CPlayer::PlayerCollider()
 	const vector<TILE_INFO*>& vecTile = m_pTerrain->GetVecTile();
 
 	RECT ColTemp;
-	
+
 	for (int k = 0; k < vecTile.size(); k++)
 	{
 		if (vecTile[k]->byOption == 1)
@@ -503,6 +499,11 @@ void CPlayer::PlayerCollider()
 			ColTemp = TerrainGet(vecTile[k]);
 			//cout << "가나다라" << endl;
 			PlayerCollider2(RectPlayer(&this->m_tInfo), ColTemp);
+		}
+		if (vecTile[k]->byOption == 1 && bAction == true)
+		{
+			ColTemp = TerrainGet(vecTile[k]);
+			ActionPlugCollider(ActionPlug,ColTemp, vecTile[k]);
 		}
 	}
 
@@ -513,9 +514,9 @@ RECT CPlayer::TerrainGet(TILE_INFO* _vecTile)
 	RECT rc =
 	{
 		_vecTile->vPos.x - TILECX,
-		_vecTile->vPos.y - TILECY * 2,
+		_vecTile->vPos.y - TILECY ,
 		_vecTile->vPos.x + TILECX ,
-		_vecTile->vPos.y + TILECY * 2
+		_vecTile->vPos.y + TILECY 
 	};
 	return rc;
 }
@@ -562,6 +563,60 @@ void CPlayer::ColTerPlayer(FsmPair _m_FsmPair)
 		m_tInfo.vPos += { m_fSpeed, 0, 0 };
 		break;
 	}
+}
+
+void CPlayer::vActionPlug(INFO * m_tInfo, FsmPair _m_FsmPair)
+{
+	float fX = 0;
+	float fY = 0;
+
+	switch (_m_FsmPair.second)
+	{
+	case ArrowUP:
+		fX = 0;
+		fY = TILECY;
+		break;
+	case ArrowDOWN:
+		fX = 0;
+		fY = -TILECY;
+		break;
+	case ArrowRIGHT:
+		fX = TILECX;
+		fY = 0;
+		break;
+	case ArrowLEFT:
+		fX = -TILECX;
+		fY = 0;
+		break;
+	}
+
+	RECT rc =
+	{
+		m_tInfo->vPos.x - TILECX / 2 + fX,
+		m_tInfo->vPos.y - TILECY / 2 + fY + 15,
+		m_tInfo->vPos.x + TILECX / 2 + fX,
+		m_tInfo->vPos.y + TILECY / 2 + fY - 15
+	};
+
+
+
+
+	ActionPlug = rc;
+}
+
+void CPlayer::ActionPlugCollider(RECT _ActionPlug, RECT _Tile, TILE_INFO* _vecTile)
+{
+	RECT rc = {};
+	if (IntersectRect(&rc, &(_ActionPlug), &(_Tile)))
+	{
+			cout << "충돌" << endl;
+			_vecTile->vPos.x -= 0.1f;
+	}
+	else
+	{
+		//Crush = false;
+	}
+
 }
 
 
