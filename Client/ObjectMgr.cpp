@@ -22,6 +22,14 @@ CGameObject* CObjectMgr::GetTerrain()
 	return m_ObjectLst[TERRAIN].front();
 }
 
+CGameObject * CObjectMgr::GetObjectTerrain()
+{
+	if (m_ObjectLst[TERRAINOBJECT].empty())
+		return nullptr;
+
+	return m_ObjectLst[TERRAINOBJECT].front();
+}
+
 CGameObject * CObjectMgr::GetPlayer()
 {
 	if (m_ObjectLst[PLAYER].empty())

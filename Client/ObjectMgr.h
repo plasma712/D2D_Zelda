@@ -13,6 +13,7 @@ private:
 
 public:
 	CGameObject* GetTerrain();
+	CGameObject* GetObjectTerrain();
 	CGameObject* GetPlayer();
 
 public:

@@ -201,6 +201,9 @@
     <ClInclude Include="AnimateIMP.h">
       <Filter>98.Managers\11.Bridge</Filter>
     </ClInclude>
+    <ClInclude Include="ObjectTerrain.h">
+      <Filter>01.GameObject\01.Terrain</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -295,6 +298,9 @@
     </ClCompile>
     <ClCompile Include="AnimateIMP.cpp">
       <Filter>98.Managers\11.Bridge</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectTerrain.cpp">
+      <Filter>01.GameObject\01.Terrain</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -37,7 +37,7 @@ Throw|Left|5|..\Texture\Player\Action\Throw\Left\Throw_Left_0%d.png
 Throw|Right|5|..\Texture\Player\Action\Throw\Right\Throw_Right_0%d.png
 Terrain|Tile|38|..\Texture\Stage\Terrain\Tile\Tile%d.png
 Stage01|Tile|23|..\Texture\MapBlock\Stage01\Tile%d.png
-ObjectStage01|Tile|4|..\Texture\MapBlock\ObjectStage01\ObjectTile0%d.png
+ObjectStage01|Tile|24|..\Texture\MapBlock\ObjectStage01\ObjectTile%d.png
 Terrain|Object|1|..\Texture\Stage\Terrain\Object\Object%d.png
 Attack|Back|3|..\Texture\Player\Action\Attack\Back\Weapon\Attack_Back_Weapon_0%d.png
 AttackEffect|Back|1|..\Texture\Player\Action\Attack\Back\Attack_Back_Effect.png
@@ -51,3 +51,4 @@ AttackMotion|Right|7|..\Texture\Player\Action\Attack\Right\Motion\OneHead_Sword_
 Attack|Right|3|..\Texture\Player\Action\Attack\Left\Weapon\Attack_Left_Weapon_0%d.png
 AttackEffect|Left|1|..\Texture\Player\Action\Attack\Left\Attack_Left_Effect.png
 AttackMotion|Left|7|..\Texture\Player\Action\Attack\Left\Motion\OneHead_Sword_Attack_Left_0%d.png
+MainTitle|Title|1|..\Texture\Title\TemTitle.png

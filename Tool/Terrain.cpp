@@ -58,7 +58,7 @@ void CTerrain::Render()
 
 		matWorld = matScale * matTrans;
 
-		pTexInfo = m_pTextureMgr->GetTexInfo(L"Terrain", L"Tile", m_vecTile[i]->byDrawID);
+		pTexInfo = m_pTextureMgr->GetTexInfo(L"ObjectStage01", L"Tile", m_vecTile[i]->byDrawID);
 		NULL_CHECK(pTexInfo);
 
 		float fCenterX = pTexInfo->tImgInfo.Width * 0.5f;
@@ -95,7 +95,7 @@ HRESULT CTerrain::Initialize()
 			pTile = new TILE_INFO;
 			pTile->vPos = { fX, fY, 0.f };
 			pTile->vSize = { 4.f, 4.f, 0.f };
-			pTile->byDrawID = 4;
+			pTile->byDrawID = 0;
 			pTile->byOption = 0;
 			pTile->iMyIndex = i * TILEX + j;
 			pTile->iParentIndex = 0;
@@ -151,7 +151,7 @@ void CTerrain::MiniRender()
 
 		matWorld = matScale * matTrans;
 
-		pTexInfo = m_pTextureMgr->GetTexInfo(L"Terrain", L"Tile", m_vecTile[i]->byDrawID);
+		pTexInfo = m_pTextureMgr->GetTexInfo(L"ObjectStage01", L"Tile", m_vecTile[i]->byDrawID);
 		NULL_CHECK(pTexInfo);
 
 		float fCenterX = pTexInfo->tImgInfo.Width * 0.5f;
@@ -322,7 +322,7 @@ CTerrain* CTerrain::Create(CToolView* pView)
 bool CTerrain::CheckInOut(const POINT & pt, const int iIndex)
 {
 	const TEX_INFO* pTexInfo =
-		m_pTextureMgr->GetTexInfo(L"Terrain", L"Tile", m_vecTile[iIndex]->byDrawID);
+		m_pTextureMgr->GetTexInfo(L"ObjectStage01", L"Tile", m_vecTile[iIndex]->byDrawID);
 
 	float left = m_vecTile[iIndex]->vPos.x - pTexInfo->tImgInfo.Width*0.5f;
 	float right = m_vecTile[iIndex]->vPos.x + pTexInfo->tImgInfo.Width*0.5f;

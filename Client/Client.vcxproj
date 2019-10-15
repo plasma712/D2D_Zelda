@@ -167,6 +167,7 @@
     <ClInclude Include="NoAnimateIMP.h" />
     <ClInclude Include="NormalEffect.h" />
     <ClInclude Include="ObjectMgr.h" />
+    <ClInclude Include="ObjectTerrain.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerEffect.h" />
     <ClInclude Include="Resource.h" />
@@ -202,6 +203,7 @@
     <ClCompile Include="NoAnimateIMP.cpp" />
     <ClCompile Include="NormalEffect.cpp" />
     <ClCompile Include="ObjectMgr.cpp" />
+    <ClCompile Include="ObjectTerrain.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerEffect.cpp" />
     <ClCompile Include="Scene.cpp" />

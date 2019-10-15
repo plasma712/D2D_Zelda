@@ -2,6 +2,7 @@
 #include "Stage.h"
 #include "Terrain.h"
 #include "Player.h"
+#include "ObjectTerrain.h"
 
 CStage::CStage()
 {
@@ -38,6 +39,11 @@ HRESULT CStage::Initialize()
 	// Terrain
 	hr = m_pObjectMgr->AddObject(TERRAIN, CTerrain::Create());
 	FAILED_CHECK_MSG_RETURN(hr, L"Terrain Create Failed", E_FAIL);
+
+	// TerrainObject
+	hr = m_pObjectMgr->AddObject(TERRAINOBJECT, ObjectTerrain::Create());
+	FAILED_CHECK_MSG_RETURN(hr, L"ObjectTerrain Create Failed", E_FAIL);
+
 
 	// Player
 	hr = m_pObjectMgr->AddObject(PLAYER, CPlayer::Create());

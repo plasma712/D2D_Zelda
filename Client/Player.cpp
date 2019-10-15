@@ -5,6 +5,8 @@
 #include "Mouse.h"
 #include "Terrain.h"
 #include "PlayerEffect.h"
+#include "ObjectTerrain.h"
+
 
 #include "NormalEffect.h"
 #include "BuffEffect.h"
@@ -240,7 +242,7 @@ FsmPair CPlayer::FSM()
 
 	/////////////////////////////////////////////////////////////////
 	if (m_pKeyMgr->KeyUp(KEY_UP) || m_pKeyMgr->KeyUp(KEY_DOWN)
-		|| m_pKeyMgr->KeyUp(KEY_RIGHT) || m_pKeyMgr->KeyUp(KEY_LEFT)) 
+		|| m_pKeyMgr->KeyUp(KEY_RIGHT) || m_pKeyMgr->KeyUp(KEY_LEFT))
 	{
 		BeHaviorFsm(BehaviorIdle, 4);
 		TimeCheck = 0.f;
@@ -282,12 +284,16 @@ FsmPair CPlayer::FSM()
 	if (m_pKeyMgr->KeyPressing(KEY_D))
 	{
 		bAction = true;
-		vActionPlug(&this->m_tInfo, m_FsmPair);
+		vObjectActionPlug(&this->m_tInfo, m_FsmPair);
+
+
 	}
 
 	if (m_pKeyMgr->KeyUp(KEY_D))
 	{
 		bAction = false;
+		PullPushCheck = false;
+		PullPushRunCheck = false;
 	}
 
 	return m_FsmPair;
@@ -403,7 +409,7 @@ void CPlayer::BeAttackEffect()
 
 void CPlayer::Arrow()
 {
-	if (MotionSkip != true)
+	if (MotionSkip != true&&PullPushRunCheck == false)
 	{
 		if (m_pKeyMgr->KeyDown(KEY_UP))
 		{
@@ -433,7 +439,7 @@ void CPlayer::BeHaviorFsm(eBehavior _enum, int _FrameMax)
 
 void CPlayer::ArrowMove(FsmPair _m_FsmPair)
 {
-	if (MotionSkip != true)
+	if (MotionSkip != true && PullPushRunCheck==false)
 	{
 		switch (_m_FsmPair.second)
 		{
@@ -453,8 +459,124 @@ void CPlayer::ArrowMove(FsmPair _m_FsmPair)
 	}
 }
 
+FsmPair CPlayer::PullPushArrow()
+{
+	m_PullPushFsmPair.first = BehaviorIdle;
+
+	if (PullPushCheck == true)
+	{
+		if (m_pKeyMgr->KeyPressing(KEY_UP))
+		{
+			m_PullPushFsmPair.second = ArrowDOWN;
+			PullPushRunCheck = true;
+		}
+		if (m_pKeyMgr->KeyPressing(KEY_DOWN))
+		{
+			m_PullPushFsmPair.second = ArrowUP;
+			PullPushRunCheck = true;
+		}
+		if (m_pKeyMgr->KeyPressing(KEY_RIGHT))
+		{
+			m_PullPushFsmPair.second = ArrowRIGHT;
+			PullPushRunCheck = true;
+		}
+		if (m_pKeyMgr->KeyPressing(KEY_LEFT))
+		{
+			m_PullPushFsmPair.second = ArrowLEFT;
+			PullPushRunCheck = true;
+		}
+
+
+		if (m_pKeyMgr->KeyUp(KEY_UP))
+		{
+			m_PullPushFsmPair.second = ArrowDOWN;
+			PullPushRunCheck = false;
+		}
+		if (m_pKeyMgr->KeyUp(KEY_DOWN))
+		{
+			m_PullPushFsmPair.second = ArrowUP;
+			PullPushRunCheck = false;
+		}
+		if (m_pKeyMgr->KeyUp(KEY_RIGHT))
+		{
+			m_PullPushFsmPair.second = ArrowRIGHT;
+			PullPushRunCheck = false;
+		}
+		if (m_pKeyMgr->KeyUp(KEY_LEFT))
+		{
+			m_PullPushFsmPair.second = ArrowLEFT;
+			PullPushRunCheck = false;
+		}
+
+	}
+	return m_PullPushFsmPair;
+}
+
+D3DXVECTOR3 CPlayer::PullPushArrowMove(FsmPair _m_FsmPair)
+{
+	D3DXVECTOR3 vPos = {};
+	if (PullPushCheck == true)
+	{
+		if ((m_PullPushFsmPair.second == _m_FsmPair.second) && PullPushRunCheck==true)// Pull
+ 		{
+			switch (_m_FsmPair.second)
+			{
+			case ArrowUP:
+				_m_FsmPair.first = BehaviorPull;
+				vPos = { 0, m_fSpeed, 0 };
+				m_tInfo.vPos += { 0, m_fSpeed, 0 };
+				break;
+			case ArrowDOWN:
+				_m_FsmPair.first = BehaviorPull;
+				vPos = { 0, -m_fSpeed, 0 };
+				m_tInfo.vPos += { 0, -m_fSpeed, 0 };
+				break;
+			case ArrowRIGHT:
+				_m_FsmPair.first = BehaviorPull;
+				vPos = { m_fSpeed,0, 0 };
+				m_tInfo.vPos += { m_fSpeed, 0, 0 };
+				break;
+			case ArrowLEFT:
+				_m_FsmPair.first = BehaviorPull;
+				vPos = { -m_fSpeed,0, 0 };
+				m_tInfo.vPos += { -m_fSpeed, 0, 0 };
+				break;
+			}
+			return vPos;
+		}
+		else // push
+		{
+			switch (_m_FsmPair.second)
+			{
+			case ArrowUP:
+				_m_FsmPair.first = BehaviorPush;
+				vPos = { 0, -m_fSpeed, 0 };
+				m_tInfo.vPos += { 0, -m_fSpeed, 0 };
+				break;
+			case ArrowDOWN:
+				_m_FsmPair.first = BehaviorPush;
+				vPos = { 0, m_fSpeed, 0 };
+				m_tInfo.vPos += { 0, m_fSpeed, 0 };
+				break;
+			case ArrowRIGHT:
+				_m_FsmPair.first = BehaviorPush;
+				vPos = { -m_fSpeed,0, 0 };
+				m_tInfo.vPos += {- m_fSpeed, 0, 0 };
+				break;
+			case ArrowLEFT:
+				_m_FsmPair.first = BehaviorPush;
+				vPos = { m_fSpeed,0, 0 };
+				m_tInfo.vPos += { m_fSpeed, 0, 0 };
+				break;
+			}
+			return vPos;
+		}
+	}
+}
+
 void CPlayer::Temp()
 {
+
 	m_pTerrain = dynamic_cast<CTerrain*>(CObjectMgr::GetInstance()->GetTerrain());
 
 	const vector<TILE_INFO*>& vecTile = m_pTerrain->GetVecTile();
@@ -487,23 +609,37 @@ void CPlayer::Temp()
 void CPlayer::PlayerCollider()
 {
 	m_pTerrain = dynamic_cast<CTerrain*>(CObjectMgr::GetInstance()->GetTerrain());
-
 	const vector<TILE_INFO*>& vecTile = m_pTerrain->GetVecTile();
-
 	RECT ColTemp;
+
+
+	m_pObjectTerrain = dynamic_cast<ObjectTerrain*>(CObjectMgr::GetInstance()->GetObjectTerrain());
+	const vector<TILE_INFO*>& ObjectvecTile = m_pObjectTerrain->GetVecTile();
+	RECT ColObjectTemp;
+
+
 
 	for (int k = 0; k < vecTile.size(); k++)
 	{
-		if (vecTile[k]->byOption == 1)
+		if (vecTile[k]->byOption == IMMORTALWALL)
 		{
 			ColTemp = TerrainGet(vecTile[k]);
 			//cout << "가나다라" << endl;
 			PlayerCollider2(RectPlayer(&this->m_tInfo), ColTemp);
 		}
-		if (vecTile[k]->byOption == 1 && bAction == true)
+	}
+
+	for (int k = 0; k < ObjectvecTile.size(); k++)
+	{
+		if (ObjectvecTile[k]->byOption == MOVEOBJECT)
 		{
-			ColTemp = TerrainGet(vecTile[k]);
-			ActionPlugCollider(ActionPlug,ColTemp, vecTile[k]);
+			ColObjectTemp = TerrainGet(ObjectvecTile[k]);
+			PlayerCollider2(RectPlayer(&this->m_tInfo), ColObjectTemp);
+		}
+		if (ObjectvecTile[k]->byOption == MOVEOBJECT && bAction == true)
+		{
+			ColObjectTemp = TerrainGet(ObjectvecTile[k]);
+			ObjectActionPlugCollider(ObjectActionPlug, ColObjectTemp, ObjectvecTile[k]);
 		}
 	}
 
@@ -516,7 +652,7 @@ RECT CPlayer::TerrainGet(TILE_INFO* _vecTile)
 		_vecTile->vPos.x - TILECX,
 		_vecTile->vPos.y - TILECY ,
 		_vecTile->vPos.x + TILECX ,
-		_vecTile->vPos.y + TILECY 
+		_vecTile->vPos.y + TILECY
 	};
 	return rc;
 }
@@ -593,9 +729,9 @@ void CPlayer::vActionPlug(INFO * m_tInfo, FsmPair _m_FsmPair)
 	RECT rc =
 	{
 		m_tInfo->vPos.x - TILECX / 2 + fX,
-		m_tInfo->vPos.y - TILECY / 2 + fY + 15,
+		m_tInfo->vPos.y - TILECY / 2 + fY,
 		m_tInfo->vPos.x + TILECX / 2 + fX,
-		m_tInfo->vPos.y + TILECY / 2 + fY - 15
+		m_tInfo->vPos.y + TILECY / 2 + fY
 	};
 
 
@@ -609,14 +745,73 @@ void CPlayer::ActionPlugCollider(RECT _ActionPlug, RECT _Tile, TILE_INFO* _vecTi
 	RECT rc = {};
 	if (IntersectRect(&rc, &(_ActionPlug), &(_Tile)))
 	{
-			cout << "충돌" << endl;
-			_vecTile->vPos.x -= 0.1f;
+		//cout << "충돌" << endl;
+		_vecTile->vPos.x -= 0.1f;
+		PullPushCheck = true;
 	}
 	else
 	{
+		PullPushCheck = false;
 		//Crush = false;
 	}
 
+}
+
+void CPlayer::vObjectActionPlug(INFO * m_tInfo, FsmPair _m_FsmPair)
+{
+	float fX = 0;
+	float fY = 0;
+
+	switch (_m_FsmPair.second)
+	{
+	case ArrowUP:
+		fX = 0;
+		fY = TILECY;
+		break;
+	case ArrowDOWN:
+		fX = 0;
+		fY = -TILECY;
+		break;
+	case ArrowRIGHT:
+		fX = TILECX;
+		fY = 0;
+		break;
+	case ArrowLEFT:
+		fX = -TILECX;
+		fY = 0;
+		break;
+	}
+
+	RECT rc =
+	{
+		m_tInfo->vPos.x - TILECX / 2 + fX,
+		m_tInfo->vPos.y - TILECY / 2 + fY,
+		m_tInfo->vPos.x + TILECX / 2 + fX,
+		m_tInfo->vPos.y + TILECY / 2 + fY
+	};
+
+
+
+
+	ObjectActionPlug = rc;
+
+}
+
+void CPlayer::ObjectActionPlugCollider(RECT _ActionPlug, RECT _Tile, TILE_INFO * _vecTile)
+{
+	RECT rc = {};
+	if (IntersectRect(&rc, &(_ActionPlug), &(_Tile)))
+	{
+		PullPushCheck = true;
+		PullPushArrow();
+		cout << PullPushCheck << endl;
+		_vecTile->vPos += PullPushArrowMove(m_FsmPair);
+	}
+	else
+	{
+		//PullPushCheck = false;
+		cout << PullPushCheck << endl;
+	}
 }
 
 

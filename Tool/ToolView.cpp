@@ -177,8 +177,9 @@ void CToolView::OnInitialUpdate()
 	FAILED_CHECK_MSG(hr, L"InitDevice Failed");
 
 	hr = m_pTextureMgr->LoadTexture(CTextureMgr::MULTI_TEXTURE,
-		L"../Texture/Stage/Terrain/Tile/Tile%d.png",
-		L"Terrain", L"Tile", 38);
+		//L"../Texture/Stage/Terrain/Tile/Tile%d.png",
+		L"../Texture/MapBlock/ObjectStage01/ObjectTile%d.png",
+		L"ObjectStage01", L"Tile", 23);
 	FAILED_CHECK_MSG(hr, L"Terrain Tile Texture Load Failed");
 
 	m_pTerrain = CTerrain::Create(this);
@@ -205,7 +206,7 @@ void CToolView::OnLButtonDown(UINT nFlags, CPoint point)
 	NULL_CHECK(pMyForm);
 
 	int iDrawID = pMyForm->m_MapTool.m_iDrawID;
-	m_pTerrain->TileChange(vMouse, iDrawID, 1);
+	m_pTerrain->TileChange(vMouse, iDrawID, MOVEOBJECT);
 
 	// 화면 갱신 함수. WM_PAINT 메시지 발생.
 	Invalidate(FALSE);

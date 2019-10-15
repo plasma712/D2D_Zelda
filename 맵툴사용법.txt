@@ -1,0 +1,6 @@
+ToolView.cpp 여기서 오브젝트키, 파일패치, 파일위치쪽 변경
+
+Terrain.cpp(drawID등 변경가능)에서 변경 해야지 이미지쪽이 변경됨
+
+
+ToolView.cpp에서 TileChage를 바꿔야 원하는걸로 변경가능(iDraw는 변경안해도됨. 숫자만 변경(IPOTION)

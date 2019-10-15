@@ -1,52 +1,16 @@
-﻿  stdafx.cpp
-  TimeMgr.cpp
-  TextureMgr.cpp
-  Texture.cpp
-  Terrain.cpp
-  Stage.cpp
-  SingleTexture.cpp
-  ScrollMgr.cpp
-  SceneMgr.cpp
-  Scene.cpp
-  PlayerEffect.cpp
-c:\users\plasma\desktop\d2d_zelda\client\playereffect.cpp(68): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  Player.cpp
-c:\users\plasma\desktop\d2d_zelda\client\player.cpp(431): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-c:\users\plasma\desktop\d2d_zelda\client\player.cpp(462): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-c:\users\plasma\desktop\d2d_zelda\client\player.cpp(495): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-c:\users\plasma\desktop\d2d_zelda\client\player.cpp(520): warning C4838: 'float'에서 'LONG'(으)로의 변환에는 축소 변환이 필요합니다.
-c:\users\plasma\desktop\d2d_zelda\client\player.cpp(520): warning C4244: '초기화 중': 'float'에서 'LONG'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-c:\users\plasma\desktop\d2d_zelda\client\player.cpp(545): warning C4838: 'float'에서 'LONG'(으)로의 변환에는 축소 변환이 필요합니다.
-c:\users\plasma\desktop\d2d_zelda\client\player.cpp(545): warning C4244: '초기화 중': 'float'에서 'LONG'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-c:\users\plasma\desktop\d2d_zelda\client\player.cpp(599): warning C4838: 'float'에서 'LONG'(으)로의 변환에는 축소 변환이 필요합니다.
-c:\users\plasma\desktop\d2d_zelda\client\player.cpp(599): warning C4244: '초기화 중': 'float'에서 'LONG'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  ObjectMgr.cpp
-  NormalEffect.cpp
-  NoAnimateIMP.cpp
-  MultiTexture.cpp
-  Mouse.cpp
-  MatrixMaker.cpp
-  Maingame.cpp
-  Logo.cpp
-  KeyMgr.cpp
-  코드를 생성하고 있습니다...
-  컴파일하고 있습니다...
-  GameObject.cpp
-c:\users\plasma\desktop\d2d_zelda\client\gameobject.cpp(47): warning C4244: '=': 'float'에서 'LONG'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-c:\users\plasma\desktop\d2d_zelda\client\gameobject.cpp(48): warning C4244: '=': 'float'에서 'LONG'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-c:\users\plasma\desktop\d2d_zelda\client\gameobject.cpp(49): warning C4244: '=': 'float'에서 'LONG'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-c:\users\plasma\desktop\d2d_zelda\client\gameobject.cpp(50): warning C4244: '=': 'float'에서 'LONG'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-c:\users\plasma\desktop\d2d_zelda\client\gameobject.cpp(61): warning C4838: 'float'에서 'LONG'(으)로의 변환에는 축소 변환이 필요합니다.
-c:\users\plasma\desktop\d2d_zelda\client\gameobject.cpp(61): warning C4244: '초기화 중': 'float'에서 'LONG'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  FrameMgr.cpp
-  EffectIMP.cpp
-  Effect.cpp
-  DeviceMgr.cpp
-  ColliderMgr.cpp
-  Client.cpp
-  BuffEffect.cpp
-  AstarMgr.cpp
-  AnimateIMP.cpp
-  코드를 생성하고 있습니다...
+﻿  Player.cpp
+c:\users\plasma\desktop\d2d_zelda\client\player.cpp(437): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\plasma\desktop\d2d_zelda\client\player.cpp(584): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+c:\users\plasma\desktop\d2d_zelda\client\player.cpp(622): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+c:\users\plasma\desktop\d2d_zelda\client\player.cpp(632): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+c:\users\plasma\desktop\d2d_zelda\client\player.cpp(656): warning C4838: 'float'에서 'LONG'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\users\plasma\desktop\d2d_zelda\client\player.cpp(656): warning C4244: '초기화 중': 'float'에서 'LONG'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\plasma\desktop\d2d_zelda\client\player.cpp(681): warning C4838: 'float'에서 'LONG'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\users\plasma\desktop\d2d_zelda\client\player.cpp(681): warning C4244: '초기화 중': 'float'에서 'LONG'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\plasma\desktop\d2d_zelda\client\player.cpp(735): warning C4838: 'float'에서 'LONG'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\users\plasma\desktop\d2d_zelda\client\player.cpp(735): warning C4244: '초기화 중': 'float'에서 'LONG'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\plasma\desktop\d2d_zelda\client\player.cpp(791): warning C4838: 'float'에서 'LONG'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\users\plasma\desktop\d2d_zelda\client\player.cpp(791): warning C4244: '초기화 중': 'float'에서 'LONG'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\plasma\desktop\d2d_zelda\client\player.cpp(575): warning C4715: 'CPlayer::PullPushArrowMove': 모든 제어 경로에서 값을 반환하지는 않습니다.
   Client.vcxproj -> C:\Users\Plasma\Desktop\D2D_Zelda\Debug\Client.exe
   Client.vcxproj -> C:\Users\Plasma\Desktop\D2D_Zelda\Debug\Client.pdb (Full PDB)

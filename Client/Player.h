@@ -1,6 +1,6 @@
 #pragma once
 #include "GameObject.h"
-
+class ObjectTerrain;
 class CTerrain;
 class CAstarMgr;
 class CPlayer :
@@ -80,6 +80,15 @@ public:
 	void Arrow();
 	void BeHaviorFsm(eBehavior _enum,int _FrameMax);
 	void ArrowMove(FsmPair _m_FsmPair);
+	/////
+	FsmPair PullPushArrow();
+	D3DXVECTOR3 PullPushArrowMove(FsmPair _m_FsmPair);
+	bool PullPushCheck = false;
+	bool PullPushRunCheck = false;
+	FsmPair m_PullPushFsmPair;
+
+
+
 #pragma region 중요포인터
 	bool PushPullCheck = false;
 	bool NotBeHavior = false;
@@ -122,6 +131,16 @@ public:
 
 	void ActionPlugCollider(RECT _ActionPlug, RECT _Tile, TILE_INFO* _vecTile);
 #pragma  endregion
+
+#pragma region 맵오브젝트충돌 
+	ObjectTerrain* m_pObjectTerrain;
+	RECT ObjectActionPlug;
+	bool ObjectbAction = false;
+	void vObjectActionPlug(INFO * m_tInfo, FsmPair _m_FsmPair);
+
+	void ObjectActionPlugCollider(RECT _ActionPlug, RECT _Tile, TILE_INFO* _vecTile);
+#pragma  endregion
+
 
 };
 
