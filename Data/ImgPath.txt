@@ -36,7 +36,8 @@ Throw|Front|5|..\Texture\Player\Action\Throw\Front\Throw_Front_0%d.png
 Throw|Left|5|..\Texture\Player\Action\Throw\Left\Throw_Left_0%d.png
 Throw|Right|5|..\Texture\Player\Action\Throw\Right\Throw_Right_0%d.png
 Terrain|Tile|38|..\Texture\Stage\Terrain\Tile\Tile%d.png
-Dungen|Tile|23|..\Texture\MapBlock\Dungen\Tile%d.png
+Stage01|Tile|23|..\Texture\MapBlock\Stage01\Tile%d.png
+ObjectStage01|Tile|4|..\Texture\MapBlock\ObjectStage01\ObjectTile0%d.png
 Terrain|Object|1|..\Texture\Stage\Terrain\Object\Object%d.png
 Attack|Back|3|..\Texture\Player\Action\Attack\Back\Weapon\Attack_Back_Weapon_0%d.png
 AttackEffect|Back|1|..\Texture\Player\Action\Attack\Back\Attack_Back_Effect.png

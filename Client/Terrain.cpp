@@ -89,8 +89,8 @@ void CTerrain::Render()
 
 		matWorld = matScale * matTrans;
 
-		//pTexInfo = m_pTextureMgr->GetTexInfo(L"Dungen", L"Tile", m_vecTile[i]->byDrawID);
-		pTexInfo = m_pTextureMgr->GetTexInfo(L"Terrain", L"Tile", m_vecTile[i]->byDrawID);
+		pTexInfo = m_pTextureMgr->GetTexInfo(L"Stage01", L"Tile", m_vecTile[i]->byDrawID);
+		//pTexInfo = m_pTextureMgr->GetTexInfo(L"Terrain", L"Tile", m_vecTile[i]->byDrawID);
 		NULL_CHECK(pTexInfo);
 
 		float fCenterX = pTexInfo->tImgInfo.Width * 0.5f;
