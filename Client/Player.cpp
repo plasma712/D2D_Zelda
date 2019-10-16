@@ -35,12 +35,13 @@ int CPlayer::Update()
 {
 	CGameObject::LateInit();
 
-	KeyInput();
 	MoveFrame();
 	//MovePath();
 	//Physics();
 	FSMANI(m_FsmPair);
 	PlayerCollider();
+	KeyInput();
+
 
 	return NO_EVENT;
 }
@@ -232,13 +233,35 @@ FsmPair CPlayer::FSM()
 	if (m_pKeyMgr->KeyPressing(KEY_UP) || m_pKeyMgr->KeyPressing(KEY_DOWN)
 		|| m_pKeyMgr->KeyPressing(KEY_RIGHT) || m_pKeyMgr->KeyPressing(KEY_LEFT))
 	{
-		TimeCheck += m_pTimeMgr->GetDeltaTime();
-		if (TimeCheck > 0.01f)
+		if (PullPushRunCheck == false && PullPushCheck == false) 
 		{
-			BeHaviorFsm(BehaviorWalk, 6);
-			ArrowMove(m_FsmPair);
+			TimeCheck += m_pTimeMgr->GetDeltaTime();
+			if (TimeCheck > 0.01f)
+			{
+				BeHaviorFsm(BehaviorWalk, 6);
+				ArrowMove(m_FsmPair);
+			}
 		}
+		if (PullPushRunCheck == true && PullPushCheck == true)
+		{
+			TimeCheck += m_pTimeMgr->GetDeltaTime();
+			if (TimeCheck > 0.01f)
+			{
+				if (m_PullPushFsmPair.second == m_FsmPair.second)
+				{
+					BeHaviorFsm(BehaviorPush, 9);
+					ArrowMove(m_FsmPair);
+				}
+				else
+				{
+					BeHaviorFsm(BehaviorPull, 9);
+					ArrowMove(m_FsmPair);
+				}
+			}
+		}
+
 	}
+
 
 	/////////////////////////////////////////////////////////////////
 	if (m_pKeyMgr->KeyUp(KEY_UP) || m_pKeyMgr->KeyUp(KEY_DOWN)
@@ -247,6 +270,7 @@ FsmPair CPlayer::FSM()
 		BeHaviorFsm(BehaviorIdle, 4);
 		TimeCheck = 0.f;
 	}
+
 	/////////////////////////////////////////////////////////////////
 	if (m_pKeyMgr->KeyPressing(KEY_A))
 	{
@@ -285,8 +309,6 @@ FsmPair CPlayer::FSM()
 	{
 		bAction = true;
 		vObjectActionPlug(&this->m_tInfo, m_FsmPair);
-
-
 	}
 
 	if (m_pKeyMgr->KeyUp(KEY_D))
@@ -294,6 +316,8 @@ FsmPair CPlayer::FSM()
 		bAction = false;
 		PullPushCheck = false;
 		PullPushRunCheck = false;
+		BeHaviorFsm(BehaviorIdle, 4);
+		TimeCheck = 0.f;
 	}
 
 	return m_FsmPair;
