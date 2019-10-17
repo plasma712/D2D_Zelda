@@ -58,7 +58,7 @@ void CTerrain::Render()
 
 		matWorld = matScale * matTrans;
 
-		pTexInfo = m_pTextureMgr->GetTexInfo(L"ObjectStage01", L"Tile", m_vecTile[i]->byDrawID);
+		pTexInfo = m_pTextureMgr->GetTexInfo(L"Stage02", L"Tile", m_vecTile[i]->byDrawID);
 		NULL_CHECK(pTexInfo);
 
 		float fCenterX = pTexInfo->tImgInfo.Width * 0.5f;
@@ -83,9 +83,9 @@ HRESULT CTerrain::Initialize()
 	TILE_INFO* pTile = nullptr;
 	float fX = 0.f, fY = 0.f;
 
-	for (int i = 0; i < 10; ++i)
+	for (int i = 0; i < 15; ++i)
 	{
-		for (int j = 0; j < 12; ++j)
+		for (int j = 0; j < 17; ++j)
 		{
 			//fX = j * TILECX + (i % 2) * (TILECX * 0.5f);
 			//fY = i * (TILECY * 0.5f);
@@ -151,7 +151,7 @@ void CTerrain::MiniRender()
 
 		matWorld = matScale * matTrans;
 
-		pTexInfo = m_pTextureMgr->GetTexInfo(L"ObjectStage01", L"Tile", m_vecTile[i]->byDrawID);
+		pTexInfo = m_pTextureMgr->GetTexInfo(L"Stage02", L"Tile", m_vecTile[i]->byDrawID);
 		NULL_CHECK(pTexInfo);
 
 		float fCenterX = pTexInfo->tImgInfo.Width * 0.5f;

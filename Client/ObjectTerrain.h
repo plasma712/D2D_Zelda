@@ -32,7 +32,7 @@ private:
 	void CreateGraph();
 
 public:
-	static ObjectTerrain* Create();
+	static ObjectTerrain* Create(int _StageNumbering);
 
 public:
 	vector<TILE_INFO*>			m_vecTile;
@@ -40,5 +40,15 @@ public:
 
 	vector<ObjectTerrain*>			m_vecTile2;
 	///////////////////////////////////////
+	int StageNumbering = Stage01;
+	HRESULT StageSelect(int _StageNumbering);
+
+	void GetObjectKey(int _StageNumbering);
+	void GetStateKey(int _StageNumbering);
+
+	wstring ObjectKey;
+	wstring StateKey;
+
+
 };
 

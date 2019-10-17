@@ -100,6 +100,12 @@
     <Filter Include="98.Managers\11.Bridge\01.EffectAttack\01.NoAnimate">
       <UniqueIdentifier>{2a55f98e-4a51-4c6c-9339-5657ed82e888}</UniqueIdentifier>
     </Filter>
+    <Filter Include="98.Managers\08.SceneMgr\00.Scene\02.Stage02">
+      <UniqueIdentifier>{f4488030-e89e-429b-a893-0ceb12e7d861}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\01.Terrain\01.Stage01">
+      <UniqueIdentifier>{2e36980f-b444-4eff-9d9c-eb8dafc0a5f6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -141,9 +147,6 @@
     <ClInclude Include="GameObject.h">
       <Filter>01.GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="Terrain.h">
-      <Filter>01.GameObject\01.Terrain</Filter>
-    </ClInclude>
     <ClInclude Include="KeyMgr.h">
       <Filter>98.Managers\03.KeyMgr</Filter>
     </ClInclude>
@@ -164,9 +167,6 @@
     </ClInclude>
     <ClInclude Include="SceneMgr.h">
       <Filter>98.Managers\08.SceneMgr</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene.h">
-      <Filter>98.Managers\08.SceneMgr\00.Scene</Filter>
     </ClInclude>
     <ClInclude Include="Logo.h">
       <Filter>98.Managers\08.SceneMgr\00.Scene\00.Logo</Filter>
@@ -202,7 +202,16 @@
       <Filter>98.Managers\11.Bridge</Filter>
     </ClInclude>
     <ClInclude Include="ObjectTerrain.h">
-      <Filter>01.GameObject\01.Terrain</Filter>
+      <Filter>01.GameObject\01.Terrain\01.Stage01</Filter>
+    </ClInclude>
+    <ClInclude Include="Terrain.h">
+      <Filter>01.GameObject\01.Terrain\01.Stage01</Filter>
+    </ClInclude>
+    <ClInclude Include="Stage02.h">
+      <Filter>98.Managers\08.SceneMgr\00.Scene\02.Stage02</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>98.Managers\08.SceneMgr\00.Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -239,9 +248,6 @@
     <ClCompile Include="GameObject.cpp">
       <Filter>01.GameObject</Filter>
     </ClCompile>
-    <ClCompile Include="Terrain.cpp">
-      <Filter>01.GameObject\01.Terrain</Filter>
-    </ClCompile>
     <ClCompile Include="KeyMgr.cpp">
       <Filter>98.Managers\03.KeyMgr</Filter>
     </ClCompile>
@@ -262,9 +268,6 @@
     </ClCompile>
     <ClCompile Include="SceneMgr.cpp">
       <Filter>98.Managers\08.SceneMgr</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene.cpp">
-      <Filter>98.Managers\08.SceneMgr\00.Scene</Filter>
     </ClCompile>
     <ClCompile Include="Logo.cpp">
       <Filter>98.Managers\08.SceneMgr\00.Scene\00.Logo</Filter>
@@ -300,7 +303,16 @@
       <Filter>98.Managers\11.Bridge</Filter>
     </ClCompile>
     <ClCompile Include="ObjectTerrain.cpp">
-      <Filter>01.GameObject\01.Terrain</Filter>
+      <Filter>01.GameObject\01.Terrain\01.Stage01</Filter>
+    </ClCompile>
+    <ClCompile Include="Terrain.cpp">
+      <Filter>01.GameObject\01.Terrain\01.Stage01</Filter>
+    </ClCompile>
+    <ClCompile Include="Stage02.cpp">
+      <Filter>98.Managers\08.SceneMgr\00.Scene\02.Stage02</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>98.Managers\08.SceneMgr\00.Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

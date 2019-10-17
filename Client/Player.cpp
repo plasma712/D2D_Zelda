@@ -68,7 +68,7 @@ void CPlayer::Render()
 
 HRESULT CPlayer::Initialize()
 {
-	Temp();
+	//Temp();
 	m_tInfo.vPos = { 430.f, 300.f, 0.f };
 	m_tInfo.vSize = { 2.5f, 2.5f, 0.f };
 
@@ -233,7 +233,7 @@ FsmPair CPlayer::FSM()
 	if (m_pKeyMgr->KeyPressing(KEY_UP) || m_pKeyMgr->KeyPressing(KEY_DOWN)
 		|| m_pKeyMgr->KeyPressing(KEY_RIGHT) || m_pKeyMgr->KeyPressing(KEY_LEFT))
 	{
-		if (PullPushRunCheck == false && PullPushCheck == false) 
+		if (PullPushRunCheck == false && PullPushCheck == false)
 		{
 			TimeCheck += m_pTimeMgr->GetDeltaTime();
 			if (TimeCheck > 0.01f)
@@ -433,7 +433,7 @@ void CPlayer::BeAttackEffect()
 
 void CPlayer::Arrow()
 {
-	if (MotionSkip != true&&PullPushRunCheck == false)
+	if (MotionSkip != true && PullPushRunCheck == false)
 	{
 		if (m_pKeyMgr->KeyDown(KEY_UP))
 		{
@@ -463,7 +463,7 @@ void CPlayer::BeHaviorFsm(eBehavior _enum, int _FrameMax)
 
 void CPlayer::ArrowMove(FsmPair _m_FsmPair)
 {
-	if (MotionSkip != true && PullPushRunCheck==false)
+	if (MotionSkip != true && PullPushRunCheck == false)
 	{
 		switch (_m_FsmPair.second)
 		{
@@ -541,8 +541,8 @@ D3DXVECTOR3 CPlayer::PullPushArrowMove(FsmPair _m_FsmPair)
 	D3DXVECTOR3 vPos = {};
 	if (PullPushCheck == true)
 	{
-		if ((m_PullPushFsmPair.second == _m_FsmPair.second) && PullPushRunCheck==true)// Pull
- 		{
+		if ((m_PullPushFsmPair.second == _m_FsmPair.second) && PullPushRunCheck == true)// Pull
+		{
 			switch (_m_FsmPair.second)
 			{
 			case ArrowUP:
@@ -585,7 +585,7 @@ D3DXVECTOR3 CPlayer::PullPushArrowMove(FsmPair _m_FsmPair)
 			case ArrowRIGHT:
 				_m_FsmPair.first = BehaviorPush;
 				vPos = { -m_fSpeed,0, 0 };
-				m_tInfo.vPos += {- m_fSpeed, 0, 0 };
+				m_tInfo.vPos += {-m_fSpeed, 0, 0 };
 				break;
 			case ArrowLEFT:
 				_m_FsmPair.first = BehaviorPush;
@@ -641,18 +641,30 @@ void CPlayer::PlayerCollider()
 	const vector<TILE_INFO*>& ObjectvecTile = m_pObjectTerrain->GetVecTile();
 	RECT ColObjectTemp;
 
+	RectImotalPlayer(&this->m_tInfo, m_FsmPair);
 
-
+	//기본 맵 충돌 타일.
 	for (int k = 0; k < vecTile.size(); k++)
 	{
+
 		if (vecTile[k]->byOption == IMMORTALWALL)
 		{
 			ColTemp = TerrainGet(vecTile[k]);
 			//cout << "가나다라" << endl;
 			PlayerCollider2(RectPlayer(&this->m_tInfo), ColTemp);
+
+			TempCrushCheck(BlockCheckWall, ColTemp);
+		}
+
+		if (vecTile[k]->byOption == ICEBLOCK)
+		{
+			ColTemp = TerrainGet(vecTile[k]);
+			//PlayerCollider2(RectPlayer(&this->m_tInfo), ColTemp);
+			IceBlockAction(RectPlayer(&this->m_tInfo), ColTemp);
 		}
 	}
 
+	// 움직이는 오브젝트쪽 관련
 	for (int k = 0; k < ObjectvecTile.size(); k++)
 	{
 		if (ObjectvecTile[k]->byOption == MOVEOBJECT)
@@ -691,6 +703,7 @@ void CPlayer::PlayerCollider2(RECT _Player, RECT _Tile)
 	else
 	{
 		//Crush = false;
+		IceBlockCheck = false;
 	}
 }
 
@@ -723,6 +736,7 @@ void CPlayer::ColTerPlayer(FsmPair _m_FsmPair)
 		m_tInfo.vPos += { m_fSpeed, 0, 0 };
 		break;
 	}
+	IceBlockCheck = true;
 }
 
 void CPlayer::vActionPlug(INFO * m_tInfo, FsmPair _m_FsmPair)
@@ -837,5 +851,97 @@ void CPlayer::ObjectActionPlugCollider(RECT _ActionPlug, RECT _Tile, TILE_INFO *
 		cout << PullPushCheck << endl;
 	}
 }
+
+void CPlayer::IceBlockAction(RECT _Player, RECT _Tile)
+{
+	RECT rc = {};
+	if (IntersectRect(&rc, &(_Player), &(_Tile)))
+	{
+		IceBlockCol(m_FsmPair);
+	}
+	else
+	{
+		//Crush = false;
+	}
+}
+
+void CPlayer::IceBlockCol(FsmPair _m_FsmPair)
+{
+	if (IceBlockCheck == false)
+	{
+		switch (_m_FsmPair.second)
+		{
+		case ArrowUP:
+			m_tInfo.vPos += { 0, m_fSpeed, 0 };
+			break;
+		case ArrowDOWN:
+			m_tInfo.vPos += { 0, -m_fSpeed, 0 };
+			break;
+		case ArrowRIGHT:
+			m_tInfo.vPos += { m_fSpeed, 0, 0 };
+			break;
+		case ArrowLEFT:
+			m_tInfo.vPos += { -m_fSpeed, 0, 0 };
+			break;
+		}
+	}
+	//cout << _m_FsmPair.second << endl;
+
+}
+
+void CPlayer::RectImotalPlayer(INFO * m_tInfo, FsmPair _m_FsmPair)
+{
+	float fX = 0;
+	float fY = 0;
+
+	switch (_m_FsmPair.second)
+	{
+	case ArrowUP:
+		fX = 0;
+		fY = TILECY;
+		break;
+	case ArrowDOWN:
+		fX = 0;
+		fY = -TILECY;
+		break;
+	case ArrowRIGHT:
+		fX = TILECX;
+		fY = 0;
+		break;
+	case ArrowLEFT:
+		fX = -TILECX;
+		fY = 0;
+		break;
+	}
+
+	RECT rc =
+	{
+		m_tInfo->vPos.x - TILECX / 2 + fX,
+		m_tInfo->vPos.y - TILECY / 2 + fY,
+		m_tInfo->vPos.x + TILECX / 2 + fX,
+		m_tInfo->vPos.y + TILECY / 2 + fY
+	};
+
+
+
+
+	BlockCheckWall = rc;
+}
+
+void CPlayer::TempCrushCheck(RECT _BlockCheckWall, RECT _Tile)
+{
+	RECT rc = {};
+	if (IntersectRect(&rc, &(_BlockCheckWall), &(_Tile)))
+	{
+		WallCol = true;
+		cout << WallCol << endl;
+	}
+	else
+	{
+		WallCol = false;
+	}
+
+}
+
 
 

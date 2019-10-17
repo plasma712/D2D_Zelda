@@ -7,6 +7,7 @@ enum eBlockType
 	NONE,
 	IMMORTALWALL,
 	MOVEOBJECT,
+	ICEBLOCK
 };
 enum eColDir
 {
@@ -34,6 +35,11 @@ enum eArrow
 	ArrowLEFT
 };
 enum OBJECT_TYPE { TERRAIN,TERRAINOBJECT ,PLAYER, MONSTER, EFFECT, UI, END };
+
+enum StageNumber
+{
+	Stage01,Stage02,Stage03
+};
 
 #define __ENUM_H__
 #endif

@@ -141,6 +141,17 @@ public:
 	void ObjectActionPlugCollider(RECT _ActionPlug, RECT _Tile, TILE_INFO* _vecTile);
 #pragma  endregion
 
+	//빙판길 충돌.
+	void IceBlockAction(RECT _Player, RECT _Tile);
 
+	void IceBlockCol(FsmPair _m_FsmPair);
+
+	bool IceBlockCheck = false; // 블럭오브젝트랑 충돌시 true로 변경해서 ice충돌안되게
+	void RectImotalPlayer(INFO * m_tInfo, FsmPair _m_FsmPair);//벽과 충돌할 시 bool값 변경해주려고 만드는것,,, 
+	RECT BlockCheckWall;
+
+	void TempCrushCheck(RECT _BlockCheckWall, RECT _Tile);
+
+	bool WallCol = false;
 };
 

@@ -83,9 +83,9 @@ HRESULT ObjectTerrain::Initialize()
 {
 	m_vecTile.reserve(TILEX * TILEY);
 
-	//HRESULT hr = LoadTile(L"../Data/MapData.dat");
-	HRESULT hr = LoadTile(L"../Data/MapBlock01.dat");
-	FAILED_CHECK_MSG_RETURN(hr, L"MapData Load Failed", E_FAIL);
+	//HRESULT hr = LoadTile(L"../Data/MapBlock01.dat");
+	//FAILED_CHECK_MSG_RETURN(hr, L"MapData Load Failed", E_FAIL);
+	StageSelect(StageNumbering);
 
 	return S_OK;
 }
@@ -150,9 +150,10 @@ void ObjectTerrain::CreateGraph()
 {
 }
 
-ObjectTerrain * ObjectTerrain::Create()
+ObjectTerrain * ObjectTerrain::Create(int _StageNumbering)
 {
 	ObjectTerrain* pInstance = new ObjectTerrain;
+	pInstance->StageNumbering = _StageNumbering;
 
 	if (FAILED(pInstance->Initialize()))
 	{
@@ -161,4 +162,33 @@ ObjectTerrain * ObjectTerrain::Create()
 	}
 
 	return pInstance;
+}
+
+HRESULT ObjectTerrain::StageSelect(int _StageNumbering)
+{
+	HRESULT hr;
+
+	switch (_StageNumbering)
+	{
+	case Stage01:
+		hr = LoadTile(L"../Data/MapBlock01.dat");
+		FAILED_CHECK_MSG_RETURN(hr, L"MapBlock01 Load Failed", E_FAIL);
+		break;
+	case Stage02:
+		hr = LoadTile(L"../Data/MapObjectTemp.dat");
+		FAILED_CHECK_MSG_RETURN(hr, L"MapObjectTemp Load Failed", E_FAIL);
+		break;
+	}
+
+	return S_OK;
+}
+
+void ObjectTerrain::GetObjectKey(int _StageNumbering)
+{
+	// 추후
+}
+
+void ObjectTerrain::GetStateKey(int _StageNumbering)
+{
+	//추후 Terrain보면서 하기
 }

@@ -57,13 +57,6 @@ int CTerrain::Update()
 	//if ((float)WINCY < CMouse::GetMouse().y)
 	//	CScrollMgr::SetScrollPos(D3DXVECTOR3(0.f, fSpeed, 0.f));
 
-	//TerrainPair temp = CollMgr->TileCollision(&m_vecTile2, m_pPlayer);
-	//
-	//if (temp.second != nullptr)
-	//{
-	//	m_pPlayer->SetColData(temp);
-	//	//temp.second->
-	//}
 
 	return NO_EVENT;
 }
@@ -77,6 +70,9 @@ void CTerrain::Render()
 	D3DXMATRIX matScale, matTrans, matWorld;
 	const TEX_INFO* pTexInfo = nullptr;
 
+	GetObjectKey(StageNumbering);
+	GetStateKey(StageNumbering);
+
 	for (size_t i = 0; i < m_vecTile.size(); ++i)
 	{
 		D3DXMatrixScaling(&matScale,
@@ -89,8 +85,10 @@ void CTerrain::Render()
 
 		matWorld = matScale * matTrans;
 
-		pTexInfo = m_pTextureMgr->GetTexInfo(L"Stage01", L"Tile", m_vecTile[i]->byDrawID);
-		//pTexInfo = m_pTextureMgr->GetTexInfo(L"Terrain", L"Tile", m_vecTile[i]->byDrawID);
+		//pTexInfo = m_pTextureMgr->GetTexInfo(L"Stage01", L"Tile", m_vecTile[i]->byDrawID);
+
+		pTexInfo = m_pTextureMgr->GetTexInfo(ObjectKey, StateKey, m_vecTile[i]->byDrawID);
+
 		NULL_CHECK(pTexInfo);
 
 		float fCenterX = pTexInfo->tImgInfo.Width * 0.5f;
@@ -106,9 +104,10 @@ HRESULT CTerrain::Initialize()
 {
 	m_vecTile.reserve(TILEX * TILEY);
 
-	//HRESULT hr = LoadTile(L"../Data/MapData.dat");
-	HRESULT hr = LoadTile(L"../Data/MapBlock.dat");
-	FAILED_CHECK_MSG_RETURN(hr, L"MapData Load Failed", E_FAIL);
+	//HRESULT hr = LoadTile(L"../Data/MapBlock.dat");
+	//FAILED_CHECK_MSG_RETURN(hr, L"MapData Load Failed", E_FAIL);
+
+	StageSelect(StageNumbering);
 
 	return S_OK;
 }
@@ -273,9 +272,11 @@ HRESULT CTerrain::LoadTile(const TCHAR* pFilePath)
 //	}
 //}
 
-CTerrain* CTerrain::Create()
+CTerrain* CTerrain::Create(int _StageNumbering)
 {
 	CTerrain* pInstance = new CTerrain;
+
+	pInstance->StageNumbering = _StageNumbering;
 
 	if (FAILED(pInstance->Initialize()))
 	{
@@ -295,3 +296,49 @@ void CTerrain::Collider(const D3DXVECTOR3 & vPos, BYTE byDrawID, BYTE byOption)
 {
 
 }
+
+HRESULT CTerrain::StageSelect(int _StageNumbering)
+{
+	HRESULT hr;
+	switch (_StageNumbering)
+	{
+	case Stage01:
+		 hr = LoadTile(L"../Data/MapBlock.dat");
+		FAILED_CHECK_MSG_RETURN(hr, L"MapBlock Load Failed", E_FAIL);
+		break;
+	case Stage02:
+	     hr = LoadTile(L"../Data/Stage02.dat");
+		FAILED_CHECK_MSG_RETURN(hr, L"Stage02 Load Failed", E_FAIL);
+		break;
+	}
+
+	return S_OK;
+}
+
+void CTerrain::GetObjectKey(int _StageNumbering)
+{
+	switch (_StageNumbering)
+	{
+	case Stage01:
+		ObjectKey = L"Stage01";
+		break;
+	case  Stage02:
+		ObjectKey = L"Stage02";
+		break;
+	}
+}
+
+void CTerrain::GetStateKey(int _StageNumbering)
+{
+	switch (_StageNumbering)
+	{
+	case Stage01:
+		StateKey = L"Tile";
+		break;
+	case Stage02:
+		StateKey = L"Tile";
+		break;
+
+	}
+}
+

@@ -38,7 +38,7 @@ private:
 	void CreateGraph();
 
 public:
-	static CTerrain* Create();
+	static CTerrain* Create(int _StageNumbering);
 
 public:
 	vector<TILE_INFO*>			m_vecTile;
@@ -54,10 +54,16 @@ public:
 	CColliderMgr * CollMgr;
 	CPlayer * m_pPlayer;
 
-
-
 public:
 
+	//스테이지에 따른 지형
+	int StageNumbering = Stage01;
+	HRESULT StageSelect(int _StageNumbering);
 
+	void GetObjectKey(int _StageNumbering);
+	void GetStateKey(int _StageNumbering);
+
+	wstring ObjectKey;
+	wstring StateKey;
 };
 

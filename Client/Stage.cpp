@@ -37,11 +37,11 @@ HRESULT CStage::Initialize()
 	FAILED_CHECK_MSG_RETURN(hr, L"LoadFromImgPathFile Failed", E_FAIL);
 
 	// Terrain
-	hr = m_pObjectMgr->AddObject(TERRAIN, CTerrain::Create());
+	hr = m_pObjectMgr->AddObject(TERRAIN, CTerrain::Create(Stage01));
 	FAILED_CHECK_MSG_RETURN(hr, L"Terrain Create Failed", E_FAIL);
 
 	// TerrainObject
-	hr = m_pObjectMgr->AddObject(TERRAINOBJECT, ObjectTerrain::Create());
+	hr = m_pObjectMgr->AddObject(TERRAINOBJECT, ObjectTerrain::Create(Stage01));
 	FAILED_CHECK_MSG_RETURN(hr, L"ObjectTerrain Create Failed", E_FAIL);
 
 

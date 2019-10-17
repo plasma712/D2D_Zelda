@@ -2,6 +2,7 @@
 #include "SceneMgr.h"
 #include "Logo.h"
 #include "Stage.h"
+#include "Stage02.h"
 
 IMPLEMENT_SINGLETON(CSceneMgr)
 
@@ -30,9 +31,14 @@ HRESULT CSceneMgr::SceneChange(SCENE_TYPE eType)
 			NULL_CHECK_MSG_RETURN(m_pCurrentScene, L"Logo Create Failed", E_FAIL);
 			break;
 		case STAGE:
-			m_pCurrentScene = CStage::Create();
+			m_pCurrentScene = CStage02::Create();
 			NULL_CHECK_MSG_RETURN(m_pCurrentScene, L"Stage Create Failed", E_FAIL);
 			break;
+		case STAGE02:
+			m_pCurrentScene = CStage02::Create();
+			NULL_CHECK_MSG_RETURN(m_pCurrentScene, L"Stage02 Create Failed", E_FAIL);
+			break;
+
 		}
 
 		m_eCurSceneType = eType;
