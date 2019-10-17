@@ -65,5 +65,7 @@ public:
 
 	wstring ObjectKey;
 	wstring StateKey;
+	RECT TerrainGet(TILE_INFO* _vecTile);
+
 };
 

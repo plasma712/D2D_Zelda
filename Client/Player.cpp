@@ -64,6 +64,7 @@ void CPlayer::Render()
 	AnimationPicture();
 
 
+
 }
 
 HRESULT CPlayer::Initialize()
@@ -211,6 +212,20 @@ void CPlayer::Physics()
 
 void CPlayer::AnimationPicture()
 {
+	// 임시 Rect 충돌보려고
+	RECT ColTemp;
+
+	D3DXVECTOR2 vPoint[5] = {};
+
+
+	ColTemp = RectPlayer(&this->m_tInfo);
+	vPoint[0] = { (float)ColTemp.left, (float)ColTemp.top };
+	vPoint[1] = { (float)ColTemp.right,(float)ColTemp.top };
+	vPoint[2] = { (float)ColTemp.right,(float)ColTemp.bottom };
+	vPoint[3] = { (float)ColTemp.left, (float)ColTemp.bottom };
+	vPoint[4] = { (float)ColTemp.left, (float)ColTemp.top };
+	//
+
 	//pTexInfo = m_pTextureMgr->GetTexInfo(L"Idle", L"Front", (int)m_tFrame.fStartFrame);
 	pTexInfo = TextureCall(m_wstrObjectKey, m_wstrStateKey, (int)m_tFrame.fStartFrame);
 	NULL_CHECK(pTexInfo);
@@ -221,7 +236,10 @@ void CPlayer::AnimationPicture()
 	m_pDeviceMgr->GetSprite()->SetTransform(&m_tInfo.matWorld);
 	m_pDeviceMgr->GetSprite()->Draw(pTexInfo->pTexture, nullptr,
 		&D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr,
-		D3DCOLOR_ARGB(255, 255, 255, 255));
+		D3DCOLOR_ARGB(TRANSPARENCY, 255, 255, 255));
+
+	m_pDeviceMgr->GetLine()->SetWidth(10.f);
+	m_pDeviceMgr->GetLine()->Draw(vPoint, 5, D3DCOLOR_ARGB(255, 0, 255, 0));
 
 }
 
@@ -646,7 +664,6 @@ void CPlayer::PlayerCollider()
 	//기본 맵 충돌 타일.
 	for (int k = 0; k < vecTile.size(); k++)
 	{
-
 		if (vecTile[k]->byOption == IMMORTALWALL)
 		{
 			ColTemp = TerrainGet(vecTile[k]);
@@ -711,10 +728,10 @@ RECT CPlayer::RectPlayer(INFO * m_tInfo)
 {
 	RECT rc =
 	{
-		m_tInfo->vPos.x - TILECX / 2,
-		m_tInfo->vPos.y - TILECY / 2,
-		m_tInfo->vPos.x + TILECX / 2,
-		m_tInfo->vPos.y + TILECY / 2
+		m_tInfo->vPos.x - TILECX / 2-12,
+		m_tInfo->vPos.y - TILECY / 2-8,
+		m_tInfo->vPos.x + TILECX / 2+12,
+		m_tInfo->vPos.y + TILECY / 2+20
 	};
 	return rc;
 }

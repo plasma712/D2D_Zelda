@@ -73,13 +73,30 @@ void CTerrain::Render()
 	GetObjectKey(StageNumbering);
 	GetStateKey(StageNumbering);
 
+	// 임시 Rect충돌보려고
+	RECT ColTemp;
+
+	D3DXVECTOR2 vPoint[5] = {};
+
+
 	for (size_t i = 0; i < m_vecTile.size(); ++i)
 	{
+
+		//////// 임시
+
+		ColTemp = TerrainGet(m_vecTile[i]);
+		vPoint[0] = { (float)ColTemp.left, (float)ColTemp.top };
+		vPoint[1] = { (float)ColTemp.right,(float)ColTemp.top };
+		vPoint[2] = { (float)ColTemp.right,(float)ColTemp.bottom };
+		vPoint[3] = { (float)ColTemp.left, (float)ColTemp.bottom };
+		vPoint[4] = { (float)ColTemp.left, (float)ColTemp.top };
+
+		///////
 		D3DXMatrixScaling(&matScale,
 			m_vecTile[i]->vSize.x,
 			m_vecTile[i]->vSize.y, 0.f);
 		D3DXMatrixTranslation(&matTrans,
-			m_vecTile[i]->vPos.x + TILECX / 2 - CScrollMgr::GetScrollPos().x,
+			m_vecTile[i]->vPos.x  /*+ TILECX / 2*/ - CScrollMgr::GetScrollPos().x,
 			m_vecTile[i]->vPos.y - CScrollMgr::GetScrollPos().y,
 			0.f);
 
@@ -96,7 +113,11 @@ void CTerrain::Render()
 
 		m_pDeviceMgr->GetSprite()->SetTransform(&matWorld);
 		m_pDeviceMgr->GetSprite()->Draw(pTexInfo->pTexture, nullptr,
-			&D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
+			&D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(TRANSPARENCY, 255, 255, 255));
+
+		m_pDeviceMgr->GetLine()->SetWidth(10.f);
+		m_pDeviceMgr->GetLine()->Draw(vPoint, 5, D3DCOLOR_ARGB(255, 0, 255, 0));
+
 	}
 }
 
@@ -340,5 +361,18 @@ void CTerrain::GetStateKey(int _StageNumbering)
 		break;
 
 	}
+}
+
+RECT CTerrain::TerrainGet(TILE_INFO * _vecTile)
+{
+	RECT rc =
+	{
+		_vecTile->vPos.x - TILECX,
+		_vecTile->vPos.y - TILECY ,
+		_vecTile->vPos.x + TILECX ,
+		_vecTile->vPos.y + TILECY
+	};
+	return rc;
+
 }
 
