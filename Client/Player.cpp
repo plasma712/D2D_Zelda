@@ -34,12 +34,12 @@ CPlayer::~CPlayer()
 int CPlayer::Update()
 {
 	CGameObject::LateInit();
-
 	MoveFrame();
 	//MovePath();
 	//Physics();
 	FSMANI(m_FsmPair);
 	PlayerCollider();
+
 	KeyInput();
 
 
@@ -52,8 +52,8 @@ void CPlayer::LateUpdate()
 	D3DXMATRIX matScale, matTrans;
 	D3DXMatrixScaling(&matScale, m_tInfo.vSize.x, m_tInfo.vSize.y, 0.f);
 	D3DXMatrixTranslation(&matTrans,
-		m_tInfo.vPos.x - CScrollMgr::GetScrollPos().x,
-		m_tInfo.vPos.y - CScrollMgr::GetScrollPos().y,
+		m_tInfo.vPos.x,
+		m_tInfo.vPos.y,
 		0.f);
 
 	m_tInfo.matWorld = matScale * matTrans;
@@ -212,6 +212,7 @@ void CPlayer::Physics()
 
 void CPlayer::AnimationPicture()
 {
+	cout << "IceBlockCheck : " << IceBlockCheck << endl;
 	// 임시 Rect 충돌보려고
 	RECT ColTemp;
 
@@ -414,7 +415,7 @@ void CPlayer::BeAttackEffect()
 		break;
 	}
 
-	CNormalEffect* pEffect = CNormalEffect::Create(pImp, (this->m_tInfo.vPos + TempInfo.vPos), { 2.0f,2.0f,2.0f });
+	CNormalEffect* pEffect = CNormalEffect::Create(pImp, (this->m_tInfo.vPos + TempInfo.vPos + CScrollMgr::GetScrollPos()), { 2.0f,2.0f,2.0f });
 	//CBuffEffect* pEffect = CBuffEffect::Create(pImp);		
 	m_pObjectMgr->AddObject(EFFECT, pEffect);
 
@@ -470,6 +471,31 @@ void CPlayer::Arrow()
 			m_FsmPair.second = ArrowLEFT;
 		}
 	}
+
+	if (WallCol == true)
+	{
+		if (IceBlockCheck == true)
+		{
+			if (m_pKeyMgr->KeyDown(KEY_UP))
+			{
+				m_FsmPair.second = ArrowDOWN;
+			}
+			if (m_pKeyMgr->KeyDown(KEY_DOWN))
+			{
+				m_FsmPair.second = ArrowUP;
+			}
+			if (m_pKeyMgr->KeyDown(KEY_RIGHT))
+			{
+				m_FsmPair.second = ArrowRIGHT;
+			}
+			if (m_pKeyMgr->KeyDown(KEY_LEFT))
+			{
+				m_FsmPair.second = ArrowLEFT;
+			}
+		}
+
+	}
+
 }
 
 void CPlayer::BeHaviorFsm(eBehavior _enum, int _FrameMax)
@@ -483,20 +509,30 @@ void CPlayer::ArrowMove(FsmPair _m_FsmPair)
 {
 	if (MotionSkip != true && PullPushRunCheck == false)
 	{
-		switch (_m_FsmPair.second)
+		if (WallCol == false)
 		{
-		case ArrowUP:
-			m_tInfo.vPos += { 0, m_fSpeed, 0 };
-			break;
-		case ArrowDOWN:
-			m_tInfo.vPos += { 0, -m_fSpeed, 0 };
-			break;
-		case ArrowRIGHT:
-			m_tInfo.vPos += { m_fSpeed, 0, 0 };
-			break;
-		case ArrowLEFT:
-			m_tInfo.vPos += { -m_fSpeed, 0, 0 };
-			break;
+			if (IceBlockCheck == false)
+			{
+				switch (_m_FsmPair.second)
+				{
+				case ArrowUP:
+					m_tInfo.vPos += { 0, m_fSpeed, 0 };
+					CScrollMgr::SetScrollPos(D3DXVECTOR3(0, m_fSpeed, 0));
+					break;
+				case ArrowDOWN:
+					m_tInfo.vPos += { 0, -m_fSpeed, 0 };
+					CScrollMgr::SetScrollPos(D3DXVECTOR3(0, -m_fSpeed, 0));
+					break;
+				case ArrowRIGHT:
+					m_tInfo.vPos += { m_fSpeed, 0, 0 };
+					CScrollMgr::SetScrollPos(D3DXVECTOR3(m_fSpeed, 0, 0));
+					break;
+				case ArrowLEFT:
+					m_tInfo.vPos += { -m_fSpeed, 0, 0 };
+					CScrollMgr::SetScrollPos(D3DXVECTOR3(-m_fSpeed, 0, 0));
+					break;
+				}
+			}
 		}
 	}
 }
@@ -702,10 +738,10 @@ RECT CPlayer::TerrainGet(TILE_INFO* _vecTile)
 {
 	RECT rc =
 	{
-		_vecTile->vPos.x - TILECX,
-		_vecTile->vPos.y - TILECY ,
-		_vecTile->vPos.x + TILECX ,
-		_vecTile->vPos.y + TILECY
+		_vecTile->vPos.x - TILECX - CScrollMgr::GetScrollPos().x,
+		_vecTile->vPos.y - TILECY - CScrollMgr::GetScrollPos().y,
+		_vecTile->vPos.x + TILECX - CScrollMgr::GetScrollPos().x,
+		_vecTile->vPos.y + TILECY - CScrollMgr::GetScrollPos().y
 	};
 	return rc;
 }
@@ -720,7 +756,7 @@ void CPlayer::PlayerCollider2(RECT _Player, RECT _Tile)
 	else
 	{
 		//Crush = false;
-		IceBlockCheck = false;
+		//IceBlockCheck = false;
 	}
 }
 
@@ -728,10 +764,10 @@ RECT CPlayer::RectPlayer(INFO * m_tInfo)
 {
 	RECT rc =
 	{
-		m_tInfo->vPos.x - TILECX / 2-12,
-		m_tInfo->vPos.y - TILECY / 2-8,
-		m_tInfo->vPos.x + TILECX / 2+12,
-		m_tInfo->vPos.y + TILECY / 2+20
+		m_tInfo->vPos.x - TILECX / 2 - 12,
+		m_tInfo->vPos.y - TILECY / 2 - 8,
+		m_tInfo->vPos.x + TILECX / 2 + 12,
+		m_tInfo->vPos.y + TILECY / 2 + 20
 	};
 	return rc;
 }
@@ -742,18 +778,21 @@ void CPlayer::ColTerPlayer(FsmPair _m_FsmPair)
 	{
 	case ArrowUP:
 		m_tInfo.vPos += { 0, -m_fSpeed, 0 };
+		CScrollMgr::SetScrollPos(D3DXVECTOR3(0, -m_fSpeed, 0));
 		break;
 	case ArrowDOWN:
 		m_tInfo.vPos += { 0, m_fSpeed, 0 };
+		CScrollMgr::SetScrollPos(D3DXVECTOR3(0, m_fSpeed, 0));
 		break;
 	case ArrowRIGHT:
 		m_tInfo.vPos += { -m_fSpeed, 0, 0 };
+		CScrollMgr::SetScrollPos(D3DXVECTOR3(-m_fSpeed, 0, 0));
 		break;
 	case ArrowLEFT:
 		m_tInfo.vPos += { m_fSpeed, 0, 0 };
+		CScrollMgr::SetScrollPos(D3DXVECTOR3(m_fSpeed, 0, 0));
 		break;
 	}
-	IceBlockCheck = true;
 }
 
 void CPlayer::vActionPlug(INFO * m_tInfo, FsmPair _m_FsmPair)
@@ -783,10 +822,10 @@ void CPlayer::vActionPlug(INFO * m_tInfo, FsmPair _m_FsmPair)
 
 	RECT rc =
 	{
-		m_tInfo->vPos.x - TILECX / 2 + fX,
-		m_tInfo->vPos.y - TILECY / 2 + fY,
-		m_tInfo->vPos.x + TILECX / 2 + fX,
-		m_tInfo->vPos.y + TILECY / 2 + fY
+		m_tInfo->vPos.x - TILECX / 2,//+ fX,
+		m_tInfo->vPos.y - TILECY / 2,//+ fY,
+		m_tInfo->vPos.x + TILECX / 2,//+ fX,
+		m_tInfo->vPos.y + TILECY / 2//+ fY
 	};
 
 
@@ -874,31 +913,37 @@ void CPlayer::IceBlockAction(RECT _Player, RECT _Tile)
 	RECT rc = {};
 	if (IntersectRect(&rc, &(_Player), &(_Tile)))
 	{
+		IceBlockCheck = true;
 		IceBlockCol(m_FsmPair);
 	}
 	else
 	{
+		//IceBlockCheck = false;
 		//Crush = false;
 	}
 }
 
 void CPlayer::IceBlockCol(FsmPair _m_FsmPair)
 {
-	if (IceBlockCheck == false)
+	if (IceBlockCheck == true)
 	{
 		switch (_m_FsmPair.second)
 		{
 		case ArrowUP:
 			m_tInfo.vPos += { 0, m_fSpeed, 0 };
+			CScrollMgr::SetScrollPos(D3DXVECTOR3(0, m_fSpeed, 0));
 			break;
 		case ArrowDOWN:
 			m_tInfo.vPos += { 0, -m_fSpeed, 0 };
+			CScrollMgr::SetScrollPos(D3DXVECTOR3(0, -m_fSpeed, 0));
 			break;
 		case ArrowRIGHT:
 			m_tInfo.vPos += { m_fSpeed, 0, 0 };
+			CScrollMgr::SetScrollPos(D3DXVECTOR3(m_fSpeed, 0, 0));
 			break;
 		case ArrowLEFT:
 			m_tInfo.vPos += { -m_fSpeed, 0, 0 };
+			CScrollMgr::SetScrollPos(D3DXVECTOR3(-m_fSpeed, 0, 0));
 			break;
 		}
 	}
@@ -951,11 +996,12 @@ void CPlayer::TempCrushCheck(RECT _BlockCheckWall, RECT _Tile)
 	if (IntersectRect(&rc, &(_BlockCheckWall), &(_Tile)))
 	{
 		WallCol = true;
-		cout << WallCol << endl;
+		cout << "WallCol : " << WallCol << endl;
 	}
 	else
 	{
 		WallCol = false;
+
 	}
 
 }

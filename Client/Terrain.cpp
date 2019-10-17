@@ -94,7 +94,8 @@ void CTerrain::Render()
 		///////
 		D3DXMatrixScaling(&matScale,
 			m_vecTile[i]->vSize.x,
-			m_vecTile[i]->vSize.y, 0.f);
+			m_vecTile[i]->vSize.y,
+			0.f);
 		D3DXMatrixTranslation(&matTrans,
 			m_vecTile[i]->vPos.x  /*+ TILECX / 2*/ - CScrollMgr::GetScrollPos().x,
 			m_vecTile[i]->vPos.y - CScrollMgr::GetScrollPos().y,
@@ -367,10 +368,10 @@ RECT CTerrain::TerrainGet(TILE_INFO * _vecTile)
 {
 	RECT rc =
 	{
-		_vecTile->vPos.x - TILECX,
-		_vecTile->vPos.y - TILECY ,
-		_vecTile->vPos.x + TILECX ,
-		_vecTile->vPos.y + TILECY
+		_vecTile->vPos.x - TILECX - CScrollMgr::GetScrollPos().x,
+		_vecTile->vPos.y - TILECY - CScrollMgr::GetScrollPos().y,
+		_vecTile->vPos.x + TILECX - CScrollMgr::GetScrollPos().x,
+		_vecTile->vPos.y + TILECY - CScrollMgr::GetScrollPos().y
 	};
 	return rc;
 
