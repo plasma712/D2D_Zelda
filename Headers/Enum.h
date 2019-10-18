@@ -7,7 +7,8 @@ enum eBlockType
 	NONE,
 	IMMORTALWALL,
 	MOVEOBJECT,
-	ICEBLOCK
+	ICEBLOCK,
+	NormalWall
 };
 enum eColDir
 {

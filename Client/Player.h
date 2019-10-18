@@ -81,7 +81,7 @@ public:
 	void BeHaviorFsm(eBehavior _enum,int _FrameMax);
 	void ArrowMove(FsmPair _m_FsmPair);
 	/////
-	FsmPair PullPushArrow();
+	FsmPair PullPushArrow(FsmPair _m_FsmPair, TILE_INFO * _vecTile);
 	D3DXVECTOR3 PullPushArrowMove(FsmPair _m_FsmPair);
 	bool PullPushCheck = false;
 	bool PullPushRunCheck = false;
@@ -118,7 +118,7 @@ public:
 
 	//bool Crush = false;
 
-	void ColTerPlayer(FsmPair _m_FsmPair);
+	void ColTerPlayer(FsmPair _m_FsmPair , FsmPair _IceBlockTempPair);
 
 #pragma endregion
 
@@ -143,15 +143,19 @@ public:
 
 	//빙판길 충돌.
 	void IceBlockAction(RECT _Player, RECT _Tile);
-
 	void IceBlockCol(FsmPair _m_FsmPair);
-
 	bool IceBlockCheck = false; // 블럭오브젝트랑 충돌시 true로 변경해서 ice충돌안되게
 	void RectImotalPlayer(INFO * m_tInfo, FsmPair _m_FsmPair);//벽과 충돌할 시 bool값 변경해주려고 만드는것,,, 
 	RECT BlockCheckWall;
-
 	void TempCrushCheck(RECT _BlockCheckWall, RECT _Tile);
-
 	bool WallCol = false;
+
+	FsmPair IceBlockTempPair;
+
+	//일반벽돌충돌.
+
+	void NormalWallCol(RECT _Player, RECT _Tile);
+
+
 };
 

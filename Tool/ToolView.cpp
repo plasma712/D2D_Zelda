@@ -206,7 +206,7 @@ void CToolView::OnLButtonDown(UINT nFlags, CPoint point)
 	NULL_CHECK(pMyForm);
 
 	int iDrawID = pMyForm->m_MapTool.m_iDrawID;
-	m_pTerrain->TileChange(vMouse, iDrawID, IMMORTALWALL);
+	m_pTerrain->TileChange(vMouse, iDrawID, NormalWall);
 
 	// 화면 갱신 함수. WM_PAINT 메시지 발생.
 	Invalidate(FALSE);
@@ -240,7 +240,7 @@ void CToolView::OnMouseMove(UINT nFlags, CPoint point)
 		NULL_CHECK(pMyForm);
 
 		int iDrawID = pMyForm->m_MapTool.m_iDrawID;
-		m_pTerrain->TileChange(vMouse, iDrawID, IMMORTALWALL);
+		m_pTerrain->TileChange(vMouse, iDrawID, NormalWall);
 
 		// 화면 갱신 함수. WM_PAINT 메시지 발생.
 		Invalidate(FALSE);
