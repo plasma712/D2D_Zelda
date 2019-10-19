@@ -367,6 +367,10 @@ void CPlayer::FSMANI(FsmPair _m_FsmPair)
 	case BehaviorPush:
 		m_wstrObjectKey = L"Push";
 		break;
+	case BehaviorIceSlide:
+		m_wstrObjectKey = L"ICE_Slide";
+		break;
+
 	}
 
 	switch (_m_FsmPair.second)
@@ -458,53 +462,33 @@ void CPlayer::BeAttackEffect()
 
 void CPlayer::Arrow()
 {
+	
 	if (MotionSkip != true && PullPushRunCheck == false)
 	{
-		if (m_pKeyMgr->KeyDown(KEY_UP))
-		{
-			m_FsmPair.second = ArrowDOWN;
-		}
-		if (m_pKeyMgr->KeyDown(KEY_DOWN))
-		{
-			m_FsmPair.second = ArrowUP;
-		}
-		if (m_pKeyMgr->KeyDown(KEY_RIGHT))
-		{
-			m_FsmPair.second = ArrowRIGHT;
-		}
-		if (m_pKeyMgr->KeyDown(KEY_LEFT))
-		{
-			m_FsmPair.second = ArrowLEFT;
-		}
-	}
-
-	if (WallCol == true)
-	{
-		if (IceBlockCheck == true)
+		if (bNomalWallCheck == true || WallCol == true)
 		{
 			if (m_pKeyMgr->KeyDown(KEY_UP))
 			{
 				m_FsmPair.second = ArrowDOWN;
+				WallCol = false;
 			}
 			if (m_pKeyMgr->KeyDown(KEY_DOWN))
 			{
 				m_FsmPair.second = ArrowUP;
+				WallCol = false;
 			}
 			if (m_pKeyMgr->KeyDown(KEY_RIGHT))
 			{
 				m_FsmPair.second = ArrowRIGHT;
+				WallCol = false;
 			}
 			if (m_pKeyMgr->KeyDown(KEY_LEFT))
 			{
 				m_FsmPair.second = ArrowLEFT;
+				WallCol = false;
 			}
 		}
 	}
-	else
-	{
-		return;
-	}
-
 }
 
 void CPlayer::BeHaviorFsm(eBehavior _enum, int _FrameMax)
@@ -518,26 +502,28 @@ void CPlayer::ArrowMove(FsmPair _m_FsmPair)
 {
 	if (MotionSkip != true && PullPushRunCheck == false)
 	{
-		switch (_m_FsmPair.second)
+		if (bNomalWallCheck == true)
 		{
-		case ArrowUP:
-			m_tInfo.vPos += { 0, m_fSpeed, 0 };
-			CScrollMgr::SetScrollPos(D3DXVECTOR3(0, m_fSpeed, 0));
-			break;
-		case ArrowDOWN:
-			m_tInfo.vPos += { 0, -m_fSpeed, 0 };
-			CScrollMgr::SetScrollPos(D3DXVECTOR3(0, -m_fSpeed, 0));
-			break;
-		case ArrowRIGHT:
-			m_tInfo.vPos += { m_fSpeed, 0, 0 };
-			CScrollMgr::SetScrollPos(D3DXVECTOR3(m_fSpeed, 0, 0));
-			break;
-		case ArrowLEFT:
-			m_tInfo.vPos += { -m_fSpeed, 0, 0 };
-			CScrollMgr::SetScrollPos(D3DXVECTOR3(-m_fSpeed, 0, 0));
-			break;
+			switch (_m_FsmPair.second)
+			{
+			case ArrowUP:
+				m_tInfo.vPos += { 0, m_fSpeed, 0 };
+				CScrollMgr::SetScrollPos(D3DXVECTOR3(0, m_fSpeed, 0));
+				break;
+			case ArrowDOWN:
+				m_tInfo.vPos += { 0, -m_fSpeed, 0 };
+				CScrollMgr::SetScrollPos(D3DXVECTOR3(0, -m_fSpeed, 0));
+				break;
+			case ArrowRIGHT:
+				m_tInfo.vPos += { m_fSpeed, 0, 0 };
+				CScrollMgr::SetScrollPos(D3DXVECTOR3(m_fSpeed, 0, 0));
+				break;
+			case ArrowLEFT:
+				m_tInfo.vPos += { -m_fSpeed, 0, 0 };
+				CScrollMgr::SetScrollPos(D3DXVECTOR3(-m_fSpeed, 0, 0));
+				break;
+			}
 		}
-
 
 	}
 }
@@ -723,7 +709,16 @@ void CPlayer::PlayerCollider()
 			ColTemp = TerrainGet(vecTile[k]);
 			//PlayerCollider2(RectPlayer(&this->m_tInfo), ColTemp);
 			IceBlockAction(RectPlayer(&this->m_tInfo), ColTemp);
+
 		}
+
+		if (/*IceBlockCheck==true &&*/ vecTile[k]->byOption == NormalWall)
+		{
+			ColTemp = TerrainGet(vecTile[k]);
+			NormalWallCol(RectPlayer(&this->m_tInfo), ColTemp);
+		}
+
+
 	}
 
 	// 움직이는 오브젝트쪽 관련
@@ -952,7 +947,10 @@ void CPlayer::IceBlockAction(RECT _Player, RECT _Tile)
 	if (IntersectRect(&rc, &(_Player), &(_Tile)))
 	{
 		IceBlockCheck = true;
+		bNomalWallCheck = false; // 확인
 		IceBlockCol(m_FsmPair);
+		m_FsmPair.first = BehaviorIceSlide;
+		m_tFrame.fMaxFrameCnt = 2;
 	}
 	else
 	{
@@ -991,6 +989,9 @@ void CPlayer::IceBlockCol(FsmPair _m_FsmPair)
 
 void CPlayer::RectImotalPlayer(INFO * m_tInfo, FsmPair _m_FsmPair)
 {
+	//static int k = 0;
+	//cout << k++ << endl;
+
 	float fX = 0;
 	float fY = 0;
 
@@ -1016,10 +1017,10 @@ void CPlayer::RectImotalPlayer(INFO * m_tInfo, FsmPair _m_FsmPair)
 
 	RECT rc =
 	{
-		m_tInfo->vPos.x - TILECX / 2 + fX,
-		m_tInfo->vPos.y - TILECY / 2 + fY,
-		m_tInfo->vPos.x + TILECX / 2 + fX,
-		m_tInfo->vPos.y + TILECY / 2 + fY
+		m_tInfo->vPos.x - TILECX / 2 + fX / 2,
+		m_tInfo->vPos.y - TILECY / 2 + fY / 2,
+		m_tInfo->vPos.x + TILECX / 2 + fX / 2,
+		m_tInfo->vPos.y + TILECY / 2 + fY / 2
 	};
 
 	BlockCheckWall = rc;
@@ -1032,11 +1033,19 @@ void CPlayer::TempCrushCheck(RECT _BlockCheckWall, RECT _Tile)
 	{
 		WallCol = true;
 		IceBlockTempPair.second = m_FsmPair.second;
-		//cout << "WallCol : " << WallCol << endl;
+	}
+}
+
+void CPlayer::NormalWallCol(RECT _Player, RECT _Tile)
+{
+	RECT rc = {};
+	if (IntersectRect(&rc, &(_Player), &(_Tile)))
+	{
+		bNomalWallCheck = true;		
 	}
 	else
 	{
-		WallCol = false;
+		//bNomalWallCheck = false;
 	}
 }
 

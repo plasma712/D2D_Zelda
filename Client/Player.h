@@ -155,7 +155,7 @@ public:
 	//일반벽돌충돌.
 
 	void NormalWallCol(RECT _Player, RECT _Tile);
-
+	bool bNomalWallCheck = false;
 
 };
 

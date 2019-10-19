@@ -25,7 +25,8 @@ enum eBehavior
 	BehaviorWalk,
 	BehaviorAttack,
 	BehaviorPull,
-	BehaviorPush
+	BehaviorPush,
+	BehaviorIceSlide
 };
 
 enum eArrow

@@ -38,7 +38,6 @@ HRESULT CSceneMgr::SceneChange(SCENE_TYPE eType)
 			m_pCurrentScene = CStage02::Create();
 			NULL_CHECK_MSG_RETURN(m_pCurrentScene, L"Stage02 Create Failed", E_FAIL);
 			break;
-
 		}
 
 		m_eCurSceneType = eType;
