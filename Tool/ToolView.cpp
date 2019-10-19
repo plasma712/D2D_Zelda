@@ -133,7 +133,7 @@ void CToolView::OnInitialUpdate()
 	int cx = TILECX * TILEX; // 가로 스크롤 범위
 	int cy = TILECY / 2 * TILEY;
 
-	CScrollView::SetScrollSizes(MM_TEXT, CSize(3000, 3000));
+	CScrollView::SetScrollSizes(MM_TEXT, CSize(10000, 10000));
 
 
 	// View 사이즈 800 * 600으로 조정하기.
@@ -178,10 +178,9 @@ void CToolView::OnInitialUpdate()
 
 	hr = m_pTextureMgr->LoadTexture(CTextureMgr::MULTI_TEXTURE,
 		//L"../Texture/Stage/Terrain/Tile/Tile%d.png",
-		L"../Texture/MapBlock/Stage01/Tile%d.png",
-		L"Stage01", L"Tile", 23);
+		L"../Texture/MapBlock/MainStage01/Tile%d.png",
+		L"MainStage01", L"Tile", 1321);
 	FAILED_CHECK_MSG(hr, L"Terrain Tile Texture Load Failed");
-
 	m_pTerrain = CTerrain::Create(this);
 	NULL_CHECK_MSG(m_pTerrain, L"Terrain Create Failed");
 }

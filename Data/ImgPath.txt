@@ -36,6 +36,7 @@ Throw|Front|5|..\Texture\Player\Action\Throw\Front\Throw_Front_0%d.png
 Throw|Left|5|..\Texture\Player\Action\Throw\Left\Throw_Left_0%d.png
 Throw|Right|5|..\Texture\Player\Action\Throw\Right\Throw_Right_0%d.png
 Terrain|Tile|38|..\Texture\Stage\Terrain\Tile\Tile%d.png
+MainStage01|Tile|1321|..\Texture\MapBlock\MainStage01\Tile%d.png
 Stage01|Tile|23|..\Texture\MapBlock\Stage01\Tile%d.png
 ObjectStage01|Tile|24|..\Texture\MapBlock\ObjectStage01\ObjectTile%d.png
 Stage02|Tile|16|..\Texture\MapBlock\Stage02\Tile%d.png

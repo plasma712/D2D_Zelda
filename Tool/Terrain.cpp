@@ -58,7 +58,7 @@ void CTerrain::Render()
 
 		matWorld = matScale * matTrans;
 
-		pTexInfo = m_pTextureMgr->GetTexInfo(L"Stage01", L"Tile", m_vecTile[i]->byDrawID);
+		pTexInfo = m_pTextureMgr->GetTexInfo(L"MainStage01", L"Tile", m_vecTile[i]->byDrawID);
 		NULL_CHECK(pTexInfo);
 
 		float fCenterX = pTexInfo->tImgInfo.Width * 0.5f;
@@ -69,7 +69,7 @@ void CTerrain::Render()
 			&D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
 
 		// 다이렉트 폰트 출력
-		swprintf_s(szIndex, L"%d", i);
+		//swprintf_s(szIndex, L"%d", i);
 
 		m_pDeviceMgr->GetFont()->DrawText(m_pDeviceMgr->GetSprite(),
 			szIndex, lstrlen(szIndex), nullptr, 0, D3DCOLOR_ARGB(255, 255, 255, 255));
@@ -83,9 +83,9 @@ HRESULT CTerrain::Initialize()
 	TILE_INFO* pTile = nullptr;
 	float fX = 0.f, fY = 0.f;
 
-	for (int i = 0; i < 10; ++i)
+	for (int i = 0; i < 54; ++i)
 	{
-		for (int j = 0; j < 12; ++j)
+		for (int j = 0; j < 55; ++j)
 		{
 			//fX = j * TILECX + (i % 2) * (TILECX * 0.5f);
 			//fY = i * (TILECY * 0.5f);
@@ -95,7 +95,7 @@ HRESULT CTerrain::Initialize()
 			pTile = new TILE_INFO;
 			pTile->vPos = { fX, fY, 0.f };
 			pTile->vSize = { 4.f, 4.f, 0.f };
-			pTile->byDrawID = 0;
+			pTile->byDrawID = 650;
 			pTile->byOption = 0;
 			pTile->iMyIndex = i * TILEX + j;
 			pTile->iParentIndex = 0;
@@ -151,7 +151,7 @@ void CTerrain::MiniRender()
 
 		matWorld = matScale * matTrans;
 
-		pTexInfo = m_pTextureMgr->GetTexInfo(L"Stage01", L"Tile", m_vecTile[i]->byDrawID);
+		pTexInfo = m_pTextureMgr->GetTexInfo(L"MainStage01", L"Tile", m_vecTile[i]->byDrawID);
 		NULL_CHECK(pTexInfo);
 
 		float fCenterX = pTexInfo->tImgInfo.Width * 0.5f;
@@ -322,7 +322,7 @@ CTerrain* CTerrain::Create(CToolView* pView)
 bool CTerrain::CheckInOut(const POINT & pt, const int iIndex)
 {
 	const TEX_INFO* pTexInfo =
-		m_pTextureMgr->GetTexInfo(L"ObjectStage01", L"Tile", m_vecTile[iIndex]->byDrawID);
+		m_pTextureMgr->GetTexInfo(L"MainStage01", L"Tile", m_vecTile[iIndex]->byDrawID);
 
 	float left = m_vecTile[iIndex]->vPos.x - pTexInfo->tImgInfo.Width*0.5f;
 	float right = m_vecTile[iIndex]->vPos.x + pTexInfo->tImgInfo.Width*0.5f;
