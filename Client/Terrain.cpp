@@ -79,47 +79,89 @@ void CTerrain::Render()
 	D3DXVECTOR2 vPoint[5] = {};
 
 
-	for (size_t i = 0; i < m_vecTile.size(); ++i)
-	{
+	//for (size_t i = 0; i < m_vecTile.size(); ++i)
+	//{
 
 		//////// 임시
-
-		ColTemp = TerrainGet(m_vecTile[i]);
-		vPoint[0] = { (float)ColTemp.left, (float)ColTemp.top };
-		vPoint[1] = { (float)ColTemp.right,(float)ColTemp.top };
-		vPoint[2] = { (float)ColTemp.right,(float)ColTemp.bottom };
-		vPoint[3] = { (float)ColTemp.left, (float)ColTemp.bottom };
-		vPoint[4] = { (float)ColTemp.left, (float)ColTemp.top };
-
+		//ColTemp = TerrainGet(m_vecTile[i]);
+		//vPoint[0] = { (float)ColTemp.left, (float)ColTemp.top };
+		//vPoint[1] = { (float)ColTemp.right,(float)ColTemp.top };
+		//vPoint[2] = { (float)ColTemp.right,(float)ColTemp.bottom };
+		//vPoint[3] = { (float)ColTemp.left, (float)ColTemp.bottom };
+		//vPoint[4] = { (float)ColTemp.left, (float)ColTemp.top };
 		///////
-		D3DXMatrixScaling(&matScale,
-			m_vecTile[i]->vSize.x,
-			m_vecTile[i]->vSize.y,
-			0.f);
-		D3DXMatrixTranslation(&matTrans,
-			m_vecTile[i]->vPos.x  /*+ TILECX / 2*/ - CScrollMgr::GetScrollPos().x,
-			m_vecTile[i]->vPos.y - CScrollMgr::GetScrollPos().y,
-			0.f);
+		/////////////////////////////////////////////////////////////////////////////////////
+		// 컬링
+		// 화면 또는 시야 범위 안에 존재하는 오브젝트들에 대해서만 연산처리하는 최적화 기법.
+		int iRow = (int)CScrollMgr::GetScrollPos().y / TILECY;
+		int iCol = (int)CScrollMgr::GetScrollPos().x / TILECX;
 
-		matWorld = matScale * matTrans;
+		int iRowEnd = iRow + WINCY / TILECY;
+		int iColEnd = iCol + WINCX / TILECX;
 
-		//pTexInfo = m_pTextureMgr->GetTexInfo(L"Stage01", L"Tile", m_vecTile[i]->byDrawID);
+		RECT rc = {};
 
-		pTexInfo = m_pTextureMgr->GetTexInfo(ObjectKey, StateKey, m_vecTile[i]->byDrawID);
+		for (int i = iRow; i < iRowEnd + 8; ++i)
+		{
+			for (int j = iCol; j < iColEnd; ++j)
+			{
+				int iIndex = i * TILEX + j;
 
-		NULL_CHECK(pTexInfo);
 
-		float fCenterX = pTexInfo->tImgInfo.Width * 0.5f;
-		float fCenterY = pTexInfo->tImgInfo.Height * 0.5f;
+				//////// 임시
+				ColTemp	= TerrainGet(m_vecTile[iIndex]);
+				vPoint[0] = { (float)ColTemp.left, (float)ColTemp.top };
+				vPoint[1] = { (float)ColTemp.right,(float)ColTemp.top };
+				vPoint[2] = { (float)ColTemp.right,(float)ColTemp.bottom };
+				vPoint[3] = { (float)ColTemp.left, (float)ColTemp.bottom };
+				vPoint[4] = { (float)ColTemp.left, (float)ColTemp.top };
+				////////
 
-		m_pDeviceMgr->GetSprite()->SetTransform(&matWorld);
-		m_pDeviceMgr->GetSprite()->Draw(pTexInfo->pTexture, nullptr,
-			&D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(TRANSPARENCY, 255, 255, 255));
 
-		m_pDeviceMgr->GetLine()->SetWidth(10.f);
-		m_pDeviceMgr->GetLine()->Draw(vPoint, 5, D3DCOLOR_ARGB(255, 0, 255, 0));
+				// 벡터의 범위를 넘어서는 인덱싱 예외처리.
+				if (0 > iIndex || (size_t)iIndex >= m_vecTile.size())
+					continue;
 
-	}
+				D3DXMatrixScaling(&matScale,
+					m_vecTile[iIndex]->vSize.x,
+					m_vecTile[iIndex]->vSize.y,
+					0.f);
+				D3DXMatrixTranslation(&matTrans,
+					m_vecTile[iIndex]->vPos.x  - CScrollMgr::GetScrollPos().x,
+					m_vecTile[iIndex]->vPos.y  - CScrollMgr::GetScrollPos().y,
+					0.f);
+
+				matWorld = matScale * matTrans;
+
+				//pTexInfo = m_pTextureMgr->GetTexInfo(L"Stage01", L"Tile", m_vecTile[i]->byDrawID);
+				pTexInfo = m_pTextureMgr->GetTexInfo(ObjectKey, StateKey, m_vecTile[iIndex]->byDrawID);
+				NULL_CHECK(pTexInfo);			
+
+				float fCenterX = pTexInfo->tImgInfo.Width * 0.5f;
+				float fCenterY = pTexInfo->tImgInfo.Height * 0.5f;
+
+				m_pDeviceMgr->GetSprite()->SetTransform(&matWorld);
+				m_pDeviceMgr->GetSprite()->Draw
+				(
+					pTexInfo->pTexture,
+					nullptr,
+					&D3DXVECTOR3(fCenterX, fCenterY, 0.f),
+					nullptr,
+					D3DCOLOR_ARGB(TRANSPARENCY, 255, 255, 255)
+				);
+
+				m_pDeviceMgr->GetLine()->SetWidth(10.f);
+				m_pDeviceMgr->GetLine()->Draw(vPoint, 5, D3DCOLOR_ARGB(255, 0, 255, 0));
+
+			}
+		}
+
+
+
+		//////////////////////////////////////////////////////////////////////
+		//m_pDeviceMgr->GetLine()->SetWidth(10.f);
+		//m_pDeviceMgr->GetLine()->Draw(vPoint, 5, D3DCOLOR_ARGB(255, 0, 255, 0));
+
 }
 
 HRESULT CTerrain::Initialize()

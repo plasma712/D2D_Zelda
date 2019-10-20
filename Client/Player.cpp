@@ -51,8 +51,8 @@ void CPlayer::LateUpdate()
 	D3DXMATRIX matScale, matTrans;
 	D3DXMatrixScaling(&matScale, m_tInfo.vSize.x, m_tInfo.vSize.y, 0.f);
 	D3DXMatrixTranslation(&matTrans,
-		m_tInfo.vPos.x,
-		m_tInfo.vPos.y,
+		m_tInfo.vPos.x -CScrollMgr::GetScrollPos().x,
+		m_tInfo.vPos.y - CScrollMgr::GetScrollPos().y,
 		0.f);
 
 	m_tInfo.matWorld = matScale * matTrans;
@@ -69,9 +69,10 @@ void CPlayer::Render()
 HRESULT CPlayer::Initialize()
 {
 	//Temp();
-	m_tInfo.vPos = { 430.f, 300.f, 0.f };
-	//m_tInfo.vPos = { 500.f,400.f,0.f };
-	//CScrollMgr::SetScrollPos(m_tInfo.vPos);
+	//m_tInfo.vPos = { 430.f, 300.f, 0.f };
+
+	m_tInfo.vPos = { 1600.f, 1500.f, 0.f };
+	CScrollMgr::SetScrollPos(m_tInfo.vPos * 0.7);
 	m_tInfo.vSize = { 2.5f, 2.5f, 0.f };
 
 	m_tFrame.fStartFrame = 0.f;
@@ -770,10 +771,10 @@ RECT CPlayer::RectPlayer(INFO * m_tInfo)
 {
 	RECT rc =
 	{
-		m_tInfo->vPos.x - TILECX / 2 - 12,
-		m_tInfo->vPos.y - TILECY / 2 - 8,
-		m_tInfo->vPos.x + TILECX / 2 + 12,
-		m_tInfo->vPos.y + TILECY / 2 + 20
+		m_tInfo->vPos.x - TILECX / 2 - 12 - CScrollMgr::GetScrollPos().x,
+		m_tInfo->vPos.y - TILECY / 2 - 8 - CScrollMgr::GetScrollPos().y,
+		m_tInfo->vPos.x + TILECX / 2 + 12 - CScrollMgr::GetScrollPos().x,
+		m_tInfo->vPos.y + TILECY / 2 + 20 - CScrollMgr::GetScrollPos().y
 	};
 	return rc;
 }

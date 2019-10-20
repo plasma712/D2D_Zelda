@@ -95,7 +95,7 @@ HRESULT CTerrain::Initialize()
 			pTile = new TILE_INFO;
 			pTile->vPos = { fX, fY, 0.f };
 			pTile->vSize = { 4.f, 4.f, 0.f };
-			pTile->byDrawID = 1320;
+			pTile->byDrawID = 0;
 			pTile->byOption = NormalWall;
 			pTile->iMyIndex = i * TILEX + j;
 			pTile->iParentIndex = 0;
