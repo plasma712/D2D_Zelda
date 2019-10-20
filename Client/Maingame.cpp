@@ -35,6 +35,7 @@ void CMaingame::Render()
 	m_pDeviceMgr->Render_Begin();
 
 	// 앞으로 모든 오브젝트는 이 사이에서 렌더링 수행.
+
 	m_pSceneMgr->Render();
 	m_pFrameMgr->RenderFPS();
 	//RenderLine();

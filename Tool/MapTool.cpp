@@ -145,7 +145,7 @@ void CMapTool::OnLbnSelchangeList()
 
 	// 미리보기 기능
 	const TEX_INFO* pTexInfo = CTextureMgr::GetInstance()->GetTexInfo(
-		L"Stage02", L"Tile", m_iDrawID);
+		L"MainStage01", L"Tile", m_iDrawID);
 	NULL_CHECK(pTexInfo);
 
 	CDeviceMgr::GetInstance()->Render_Begin();

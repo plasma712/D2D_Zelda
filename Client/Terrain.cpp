@@ -124,8 +124,8 @@ void CTerrain::Render()
 
 HRESULT CTerrain::Initialize()
 {
-	m_vecTile.reserve(TILEX * TILEY);
-
+	//m_vecTile.reserve(TILEX * TILEY);
+	m_vecTile.reserve(3000);
 	//HRESULT hr = LoadTile(L"../Data/MapBlock.dat");
 	//FAILED_CHECK_MSG_RETURN(hr, L"MapData Load Failed", E_FAIL);
 
@@ -245,55 +245,6 @@ HRESULT CTerrain::LoadTile(const TCHAR* pFilePath)
 	return S_OK;
 }
 
-//void CTerrain::CreateGraph()
-//{
-//	m_vecGraph.resize(TILEX * TILEY);
-//
-//	for (int i = 0; i < TILEY; ++i)
-//	{
-//		for (int j = 0; j < TILEX; ++j)
-//		{
-//			int iIndex = i * TILEX + j;
-//
-//			// 좌상단
-//			if ((0 != i) && (0 != iIndex % (TILEX * 2)))
-//			{
-//				if (!(i % 2) && (0 == m_vecTile[iIndex - (TILEX + 1)]->byOption))
-//					m_vecGraph[iIndex].push_back(m_vecTile[iIndex - (TILEX + 1)]);
-//				else if((i % 2) && (0 == m_vecTile[iIndex - TILEX]->byOption))
-//					m_vecGraph[iIndex].push_back(m_vecTile[iIndex - TILEX]);
-//			}
-//
-//			// 우상단
-//			if ((0 != i) && (TILEX * 2 - 1 != iIndex % (TILEX * 2)))
-//			{
-//				if (!(i % 2) && (0 == m_vecTile[iIndex - TILEX]->byOption))
-//					m_vecGraph[iIndex].push_back(m_vecTile[iIndex - TILEX]);
-//				else if ((i % 2) && (0 == m_vecTile[iIndex - (TILEX - 1)]->byOption))
-//					m_vecGraph[iIndex].push_back(m_vecTile[iIndex - (TILEX - 1)]);
-//			}
-//
-//			// 좌하단
-//			if ((TILEY - 1 != i) && (0 != iIndex % (TILEX * 2)))
-//			{
-//				if (!(i % 2) && (0 == m_vecTile[iIndex + (TILEX - 1)]->byOption))
-//					m_vecGraph[iIndex].push_back(m_vecTile[iIndex + (TILEX - 1)]);
-//				else if ((i % 2) && (0 == m_vecTile[iIndex + TILEX]->byOption))
-//					m_vecGraph[iIndex].push_back(m_vecTile[iIndex + TILEX]);
-//			}
-//
-//			// 우하단
-//			if ((TILEY - 1 != i) && (TILEX * 2 - 1 != iIndex % (TILEX * 2)))
-//			{
-//				if (!(i % 2) && (0 == m_vecTile[iIndex + TILEX]->byOption))
-//					m_vecGraph[iIndex].push_back(m_vecTile[iIndex + TILEX]);
-//				else if ((i % 2) && (0 == m_vecTile[iIndex + (TILEX + 1)]->byOption))
-//					m_vecGraph[iIndex].push_back(m_vecTile[iIndex + (TILEX + 1)]);
-//			}
-//		}
-//	}
-//}
-
 CTerrain* CTerrain::Create(int _StageNumbering)
 {
 	CTerrain* pInstance = new CTerrain;
@@ -325,7 +276,8 @@ HRESULT CTerrain::StageSelect(int _StageNumbering)
 	switch (_StageNumbering)
 	{
 	case Stage01:
-		 hr = LoadTile(L"../Data/MapBlock.dat");
+		 //hr = LoadTile(L"../Data/MapBlock.dat");
+		hr = LoadTile(L"../Data/MainStage01.dat");
 		FAILED_CHECK_MSG_RETURN(hr, L"MapBlock Load Failed", E_FAIL);
 		break;
 	case Stage02:
@@ -342,7 +294,7 @@ void CTerrain::GetObjectKey(int _StageNumbering)
 	switch (_StageNumbering)
 	{
 	case Stage01:
-		ObjectKey = L"Stage01";
+		ObjectKey = L"MainStage01";
 		break;
 	case  Stage02:
 		ObjectKey = L"Stage02";

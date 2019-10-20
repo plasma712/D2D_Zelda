@@ -83,9 +83,9 @@ HRESULT CTerrain::Initialize()
 	TILE_INFO* pTile = nullptr;
 	float fX = 0.f, fY = 0.f;
 
-	for (int i = 0; i < 54; ++i)
+	for (int i = 0; i < 52; ++i)
 	{
-		for (int j = 0; j < 55; ++j)
+		for (int j = 0; j < 53; ++j)
 		{
 			//fX = j * TILECX + (i % 2) * (TILECX * 0.5f);
 			//fY = i * (TILECY * 0.5f);
@@ -95,8 +95,8 @@ HRESULT CTerrain::Initialize()
 			pTile = new TILE_INFO;
 			pTile->vPos = { fX, fY, 0.f };
 			pTile->vSize = { 4.f, 4.f, 0.f };
-			pTile->byDrawID = 650;
-			pTile->byOption = 0;
+			pTile->byDrawID = 1320;
+			pTile->byOption = NormalWall;
 			pTile->iMyIndex = i * TILEX + j;
 			pTile->iParentIndex = 0;
 
