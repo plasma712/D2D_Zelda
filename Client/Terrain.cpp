@@ -92,20 +92,20 @@ void CTerrain::Render()
 		///////
 		/////////////////////////////////////////////////////////////////////////////////////
 		// 컬링
-		// 화면 또는 시야 범위 안에 존재하는 오브젝트들에 대해서만 연산처리하는 최적화 기법.
-		int iRow = (int)CScrollMgr::GetScrollPos().y / TILECY;
-		int iCol = (int)CScrollMgr::GetScrollPos().x / TILECX;
 
-		int iRowEnd = iRow + WINCY / TILECY;
-		int iColEnd = iCol + WINCX / TILECX;
+		int iCol = (int)CScrollMgr::GetScrollPos().y / TILECY; // 세로
+		int iRow = (int)CScrollMgr::GetScrollPos().x / TILECX - 15; // 가로
+
+		int iColEnd = iCol + WINCY / TILECY;
+		int iRowEnd = iRow + WINCX / TILECX;
 
 		RECT rc = {};
 
-		for (int i = iRow; i < iRowEnd + 8; ++i)
+		for (int i = iRow; i < iRowEnd; ++i) // 가로
 		{
-			for (int j = iCol; j < iColEnd; ++j)
+			for (int j = iCol; j < iColEnd ; ++j) // 세로
 			{
-				int iIndex = i * TILEX + j;
+				int iIndex = i + j * 53;
 
 
 				//////// 임시
@@ -119,8 +119,8 @@ void CTerrain::Render()
 
 
 				// 벡터의 범위를 넘어서는 인덱싱 예외처리.
-				if (0 > iIndex || (size_t)iIndex >= m_vecTile.size())
-					continue;
+				//if (0 > iIndex || (size_t)iIndex >= m_vecTile.size())
+				//	continue;
 
 				D3DXMatrixScaling(&matScale,
 					m_vecTile[iIndex]->vSize.x,

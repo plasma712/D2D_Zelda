@@ -2,7 +2,7 @@
 
 #ifndef __DEFINE_H__
 
-static int TRANSPARENCY = 140;
+static int TRANSPARENCY = 255;//140;
 
 #define WINCX 800
 #define WINCY 600
