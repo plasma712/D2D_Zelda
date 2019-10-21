@@ -41,7 +41,6 @@ int CPlayer::Update()
 
 	KeyInput();
 
-
 	return NO_EVENT;
 }
 
@@ -70,8 +69,8 @@ HRESULT CPlayer::Initialize()
 {
 	//Temp();
 	//m_tInfo.vPos = { 430.f, 300.f, 0.f };
-
-	m_tInfo.vPos = { 1600.f, 1500.f, 0.f };
+	//m_tInfo.vPos = { 0,0,0 };
+	m_tInfo.vPos = { 1375.f, 1080.f, 0.f };
 	CScrollMgr::SetScrollPos(m_tInfo.vPos * 0.7);
 	m_tInfo.vSize = { 2.5f, 2.5f, 0.f };
 
@@ -89,6 +88,10 @@ HRESULT CPlayer::Initialize()
 	/////
 	IceBlockTempPair.first = BehaviorIdle;
 	IceBlockTempPair.second = ArrowDOWN;
+
+	cout << "vpos.x : " << m_tInfo.vPos.x << endl;
+	cout << "vpos.y : " << m_tInfo.vPos.y << endl;
+
 
 	return S_OK;
 }

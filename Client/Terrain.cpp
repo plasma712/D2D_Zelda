@@ -93,19 +93,24 @@ void CTerrain::Render()
 		/////////////////////////////////////////////////////////////////////////////////////
 		// 컬링
 
-		int iCol = (int)CScrollMgr::GetScrollPos().y / TILECY; // 세로
-		int iRow = (int)CScrollMgr::GetScrollPos().x / TILECX - 15; // 가로
+		int iRow = (int)CScrollMgr::GetScrollPos().y / (TILECY * 2); // 가로
+		int iCol = (int)CScrollMgr::GetScrollPos().x / (TILECX * 2); // 세로
 
-		int iColEnd = iCol + WINCY / TILECY;
-		int iRowEnd = iRow + WINCX / TILECX;
+		//int iRowEnd = iRow + WINCX / TILECY;
+		//int iColEnd = iCol + WINCY / TILECY;
+
+		int iRowEnd = iRow + WINCY / TILECY;
+		int iColEnd = iCol + WINCX / TILECX;
+		//cout << "ScrollPos(). x : " << (int)CScrollMgr::GetScrollPos().x << endl;
+
 
 		RECT rc = {};
 
-		for (int i = iRow; i < iRowEnd; ++i) // 가로
+		for (int i = iRow; i < iRowEnd-7; ++i) // 세로
 		{
-			for (int j = iCol; j < iColEnd ; ++j) // 세로
+			for (int j = iCol; j < iColEnd-11; ++j) // 가로
 			{
-				int iIndex = i + j * 53;
+				int iIndex = i * 53 + j;
 
 
 				//////// 임시
@@ -127,8 +132,8 @@ void CTerrain::Render()
 					m_vecTile[iIndex]->vSize.y,
 					0.f);
 				D3DXMatrixTranslation(&matTrans,
-					m_vecTile[iIndex]->vPos.x  - CScrollMgr::GetScrollPos().x,
-					m_vecTile[iIndex]->vPos.y  - CScrollMgr::GetScrollPos().y,
+					m_vecTile[iIndex]->vPos.x - CScrollMgr::GetScrollPos().x,
+					m_vecTile[iIndex]->vPos.y - CScrollMgr::GetScrollPos().y,
 					0.f);
 
 				matWorld = matScale * matTrans;
@@ -171,7 +176,10 @@ HRESULT CTerrain::Initialize()
 	//HRESULT hr = LoadTile(L"../Data/MapBlock.dat");
 	//FAILED_CHECK_MSG_RETURN(hr, L"MapData Load Failed", E_FAIL);
 
+
+
 	StageSelect(StageNumbering);
+
 
 	return S_OK;
 }
@@ -179,6 +187,7 @@ HRESULT CTerrain::Initialize()
 HRESULT CTerrain::LateInit()
 {
 	//CreateGraph();
+
 	return S_OK;
 }
 
