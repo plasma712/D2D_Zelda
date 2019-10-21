@@ -54,28 +54,48 @@ void ObjectTerrain::Render()
 	D3DXMATRIX matScale, matTrans, matWorld;
 	const TEX_INFO* pTexInfo = nullptr;
 
+	RECT ColTemp;
+
+	D3DXVECTOR2 vPoint[5] = {};
+
+
+
 	for (size_t i = 0; i < m_vecTile.size(); ++i)
 	{
-		D3DXMatrixScaling(&matScale,
-			m_vecTile[i]->vSize.x,
-			m_vecTile[i]->vSize.y, 0.f);
-		D3DXMatrixTranslation(&matTrans,
-			m_vecTile[i]->vPos.x /*+ TILECX / 2*/ - CScrollMgr::GetScrollPos().x,
-			m_vecTile[i]->vPos.y - CScrollMgr::GetScrollPos().y,
-			0.f);
+		if (m_vecTile[i]->byOption == MOVEOBJECT)
+		{
+			ColTemp = ObjectTerrainGet(m_vecTile[i]);
+			vPoint[0] = { (float)ColTemp.left, (float)ColTemp.top };
+			vPoint[1] = { (float)ColTemp.right,(float)ColTemp.top };
+			vPoint[2] = { (float)ColTemp.right,(float)ColTemp.bottom };
+			vPoint[3] = { (float)ColTemp.left, (float)ColTemp.bottom };
+			vPoint[4] = { (float)ColTemp.left, (float)ColTemp.top };
 
-		matWorld = matScale * matTrans;
+			D3DXMatrixScaling(&matScale,
+				m_vecTile[i]->vSize.x,
+				m_vecTile[i]->vSize.y, 0.f);
+			D3DXMatrixTranslation(&matTrans,
+				m_vecTile[i]->vPos.x /*+ TILECX / 2*/ - CScrollMgr::GetScrollPos().x,
+				m_vecTile[i]->vPos.y - CScrollMgr::GetScrollPos().y,
+				0.f);
 
-		pTexInfo = m_pTextureMgr->GetTexInfo(L"ObjectStage01", L"Tile", m_vecTile[i]->byDrawID);
-		//pTexInfo = m_pTextureMgr->GetTexInfo(L"Terrain", L"Tile", m_vecTile[i]->byDrawID);
-		NULL_CHECK(pTexInfo);
+			matWorld = matScale * matTrans;
 
-		float fCenterX = pTexInfo->tImgInfo.Width * 0.5f;
-		float fCenterY = pTexInfo->tImgInfo.Height * 0.5f;
+			pTexInfo = m_pTextureMgr->GetTexInfo(L"MainStage01", L"Tile", m_vecTile[i]->byDrawID);
+			//pTexInfo = m_pTextureMgr->GetTexInfo(L"Terrain", L"Tile", m_vecTile[i]->byDrawID);
+			NULL_CHECK(pTexInfo);
 
-		m_pDeviceMgr->GetSprite()->SetTransform(&matWorld);
-		m_pDeviceMgr->GetSprite()->Draw(pTexInfo->pTexture, nullptr,
-			&D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
+			float fCenterX = pTexInfo->tImgInfo.Width * 0.5f;
+			float fCenterY = pTexInfo->tImgInfo.Height * 0.5f;
+
+			m_pDeviceMgr->GetSprite()->SetTransform(&matWorld);
+			m_pDeviceMgr->GetSprite()->Draw(pTexInfo->pTexture, nullptr,
+				&D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(140, 255, 255, 255));
+
+			m_pDeviceMgr->GetLine()->SetWidth(10.f);
+			m_pDeviceMgr->GetLine()->Draw(vPoint, 5, D3DCOLOR_ARGB(255, 255, 10, 100));
+
+		}
 	}
 }
 
@@ -171,7 +191,7 @@ HRESULT ObjectTerrain::StageSelect(int _StageNumbering)
 	switch (_StageNumbering)
 	{
 	case Stage01:
-		hr = LoadTile(L"../Data/MapBlock01.dat");
+		hr = LoadTile(L"../Data/MainStageObject01.dat");
 		FAILED_CHECK_MSG_RETURN(hr, L"MapBlock01 Load Failed", E_FAIL);
 		break;
 	case Stage02:
@@ -191,4 +211,16 @@ void ObjectTerrain::GetObjectKey(int _StageNumbering)
 void ObjectTerrain::GetStateKey(int _StageNumbering)
 {
 	//추후 Terrain보면서 하기
+}
+
+RECT ObjectTerrain::ObjectTerrainGet(TILE_INFO * _vecTile)
+{
+	RECT rc =
+	{
+		_vecTile->vPos.x - TILECX - CScrollMgr::GetScrollPos().x,
+		_vecTile->vPos.y - TILECY - CScrollMgr::GetScrollPos().y,
+		_vecTile->vPos.x + TILECX - CScrollMgr::GetScrollPos().x,
+		_vecTile->vPos.y + TILECY - CScrollMgr::GetScrollPos().y
+	};
+	return rc;
 }

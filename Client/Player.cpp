@@ -50,7 +50,7 @@ void CPlayer::LateUpdate()
 	D3DXMATRIX matScale, matTrans;
 	D3DXMatrixScaling(&matScale, m_tInfo.vSize.x, m_tInfo.vSize.y, 0.f);
 	D3DXMatrixTranslation(&matTrans,
-		m_tInfo.vPos.x -CScrollMgr::GetScrollPos().x,
+		m_tInfo.vPos.x - CScrollMgr::GetScrollPos().x,
 		m_tInfo.vPos.y - CScrollMgr::GetScrollPos().y,
 		0.f);
 
@@ -70,7 +70,7 @@ HRESULT CPlayer::Initialize()
 	//Temp();
 	//m_tInfo.vPos = { 430.f, 300.f, 0.f };
 	//m_tInfo.vPos = { 0,0,0 };
-	m_tInfo.vPos = { 1375.f, 1080.f, 0.f };
+	m_tInfo.vPos = { 1475.f, 1280.f, 0.f };
 	CScrollMgr::SetScrollPos(m_tInfo.vPos * 0.7);
 	m_tInfo.vSize = { 2.5f, 2.5f, 0.f };
 
@@ -132,19 +132,19 @@ void CPlayer::KeyInput()
 
 	/*if (m_pKeyMgr->KeyPressing(KEY_RIGHT))
 	{
-		m_tInfo.vPos += D3DXVECTOR3(m_fSpeedX, 0.f, 0.f);
-		m_wstrObjectKey = L"Move";
-		m_wstrStateKey = L"Right";
-		m_tFrame.fMaxFrameCnt = 6;
+	m_tInfo.vPos += D3DXVECTOR3(m_fSpeedX, 0.f, 0.f);
+	m_wstrObjectKey = L"Move";
+	m_wstrStateKey = L"Right";
+	m_tFrame.fMaxFrameCnt = 6;
 	}
 	if (m_pKeyMgr->KeyUp(KEY_RIGHT))
 	{
-		m_wstrObjectKey = L"Idle";
-		m_tFrame.fMaxFrameCnt = 4;
+	m_wstrObjectKey = L"Idle";
+	m_tFrame.fMaxFrameCnt = 4;
 	}
 	if (m_pKeyMgr->KeyPressing(KEY_LEFT))
 	{
-		m_tInfo.vPos -= D3DXVECTOR3(m_fSpeedX, 0.f, 0.f);
+	m_tInfo.vPos -= D3DXVECTOR3(m_fSpeedX, 0.f, 0.f);
 	}
 	*/
 
@@ -227,6 +227,7 @@ void CPlayer::AnimationPicture()
 	RECT ColTemp;
 
 	D3DXVECTOR2 vPoint[5] = {};
+	D3DXVECTOR2 APoint[5] = {};
 
 
 	ColTemp = RectPlayer(&this->m_tInfo);
@@ -235,6 +236,14 @@ void CPlayer::AnimationPicture()
 	vPoint[2] = { (float)ColTemp.right,(float)ColTemp.bottom };
 	vPoint[3] = { (float)ColTemp.left, (float)ColTemp.bottom };
 	vPoint[4] = { (float)ColTemp.left, (float)ColTemp.top };
+	//
+	APoint[0] = { (float)ObjectActionPlug.left, (float)ObjectActionPlug.top };
+	APoint[1] = { (float)ObjectActionPlug.right,(float)ObjectActionPlug.top };
+	APoint[2] = { (float)ObjectActionPlug.right,(float)ObjectActionPlug.bottom };
+	APoint[3] = { (float)ObjectActionPlug.left, (float)ObjectActionPlug.bottom };
+	APoint[4] = { (float)ObjectActionPlug.left, (float)ObjectActionPlug.top };
+
+	
 	//
 
 	//pTexInfo = m_pTextureMgr->GetTexInfo(L"Idle", L"Front", (int)m_tFrame.fStartFrame);
@@ -247,10 +256,15 @@ void CPlayer::AnimationPicture()
 	m_pDeviceMgr->GetSprite()->SetTransform(&m_tInfo.matWorld);
 	m_pDeviceMgr->GetSprite()->Draw(pTexInfo->pTexture, nullptr,
 		&D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr,
-		D3DCOLOR_ARGB(TRANSPARENCY, 255, 255, 255));
+		D3DCOLOR_ARGB(140, 255, 255, 255));
 
 	m_pDeviceMgr->GetLine()->SetWidth(10.f);
-	m_pDeviceMgr->GetLine()->Draw(vPoint, 5, D3DCOLOR_ARGB(255, 0, 255, 0));
+	m_pDeviceMgr->GetLine()->Draw(APoint, 5, D3DCOLOR_ARGB(255, 0, 255, 0));
+	//m_pDeviceMgr->GetLine()->Draw(APoint, 5, D3DCOLOR_ARGB(255, 0, 255, 0));
+
+
+
+
 
 }
 
@@ -290,7 +304,6 @@ FsmPair CPlayer::FSM()
 		}
 
 	}
-
 
 	/////////////////////////////////////////////////////////////////
 	if (m_pKeyMgr->KeyUp(KEY_UP) || m_pKeyMgr->KeyUp(KEY_DOWN)
@@ -346,6 +359,7 @@ FsmPair CPlayer::FSM()
 		PullPushCheck = false;
 		PullPushRunCheck = false;
 		BeHaviorFsm(BehaviorIdle, 4);
+
 		TimeCheck = 0.f;
 	}
 
@@ -466,7 +480,7 @@ void CPlayer::BeAttackEffect()
 
 void CPlayer::Arrow()
 {
-	
+
 	if (MotionSkip != true && PullPushRunCheck == false)
 	{
 		if (bNomalWallCheck == true || WallCol == true)
@@ -736,6 +750,7 @@ void CPlayer::PlayerCollider()
 		if (ObjectvecTile[k]->byOption == MOVEOBJECT && bAction == true)
 		{
 			ColObjectTemp = TerrainGet(ObjectvecTile[k]);
+
 			ObjectActionPlugCollider(ObjectActionPlug, ColObjectTemp, ObjectvecTile[k]);
 		}
 	}
@@ -760,7 +775,7 @@ void CPlayer::PlayerCollider2(RECT _Player, RECT _Tile)
 	if (IntersectRect(&rc, &(_Player), &(_Tile)))
 	{
 		ColTerPlayer(m_FsmPair, IceBlockTempPair);
-
+		cout << "충돌난다 휴" << endl;
 
 	}
 	else
@@ -915,16 +930,28 @@ void CPlayer::vObjectActionPlug(INFO * m_tInfo, FsmPair _m_FsmPair)
 
 	RECT rc =
 	{
-		m_tInfo->vPos.x - TILECX / 2 + fX,
-		m_tInfo->vPos.y - TILECY / 2 + fY,
-		m_tInfo->vPos.x + TILECX / 2 + fX,
-		m_tInfo->vPos.y + TILECY / 2 + fY
+		m_tInfo->vPos.x - TILECX / 2  - CScrollMgr::GetScrollPos().x +fX,
+		m_tInfo->vPos.y - TILECY / 2  - CScrollMgr::GetScrollPos().y +fY,
+		m_tInfo->vPos.x + TILECX / 2  - CScrollMgr::GetScrollPos().x +fX,
+		m_tInfo->vPos.y + TILECY / 2  - CScrollMgr::GetScrollPos().y +fY
 	};
 
 
 
 
 	ObjectActionPlug = rc;
+
+
+	cout << "----------------------------------------------------" << endl;
+	cout << "ObjectActionPlug  : " << ObjectActionPlug.top <<endl;
+	cout << "ObjectActionPlug  : " << ObjectActionPlug.bottom <<endl;
+	cout << "ObjectActionPlug  : " << ObjectActionPlug.right <<endl;
+	cout << "ObjectActionPlug  : " << ObjectActionPlug.left <<endl;
+	cout << "----------------------------------------------------" << endl;
+
+
+
+
 
 }
 
@@ -933,8 +960,9 @@ void CPlayer::ObjectActionPlugCollider(RECT _ActionPlug, RECT _Tile, TILE_INFO *
 	RECT rc = {};
 	if (IntersectRect(&rc, &(_ActionPlug), &(_Tile)))
 	{
+		cout << "여기충돌하냐??? " << endl;
 		PullPushCheck = true;
-		PullPushArrow(m_FsmPair,_vecTile);
+		PullPushArrow(m_FsmPair, _vecTile);
 		//cout << PullPushCheck << endl;
 		//_vecTile->vPos += PullPushArrowMove(m_FsmPair);
 	}
@@ -1045,7 +1073,7 @@ void CPlayer::NormalWallCol(RECT _Player, RECT _Tile)
 	RECT rc = {};
 	if (IntersectRect(&rc, &(_Player), &(_Tile)))
 	{
-		bNomalWallCheck = true;		
+		bNomalWallCheck = true;
 	}
 	else
 	{

@@ -156,7 +156,7 @@ void CTerrain::Render()
 				);
 
 				m_pDeviceMgr->GetLine()->SetWidth(10.f);
-				m_pDeviceMgr->GetLine()->Draw(vPoint, 5, D3DCOLOR_ARGB(255, 0, 255, 0));
+				//m_pDeviceMgr->GetLine()->Draw(vPoint, 5, D3DCOLOR_ARGB(255, 0, 255, 0));
 
 			}
 		}
@@ -284,7 +284,7 @@ HRESULT CTerrain::LoadTile(const TCHAR* pFilePath)
 	{
 		ReadFile(hFile, &tInfo, sizeof(TILE_INFO), &dwBytes, nullptr);
 
-		if (0 == dwBytes)
+		if (0 == dwBytes) 
 			break;
 
 		pTile = new TILE_INFO(tInfo);
