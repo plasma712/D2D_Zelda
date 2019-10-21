@@ -55,6 +55,19 @@ void CPlayer::LateUpdate()
 		0.f);
 
 	m_tInfo.matWorld = matScale * matTrans;
+
+	m_pTerrain = dynamic_cast<CTerrain*>(CObjectMgr::GetInstance()->GetTerrain());
+	const vector<TILE_INFO*>& vecTile = m_pTerrain->GetVecTile();
+
+	for (int k = 0; k < vecTile.size(); k++)
+	{
+		if (vecTile[k]->byOption == OneMoreButtonWall || vecTile[k]->byOption == ManyButtonWall)
+		{
+			ButtonTile.push_back(k);
+		}
+	}
+
+
 }
 
 void CPlayer::Render()
@@ -70,13 +83,28 @@ HRESULT CPlayer::Initialize()
 	//Temp();
 	//m_tInfo.vPos = { 430.f, 300.f, 0.f };
 	//m_tInfo.vPos = { 0,0,0 };
-	m_tInfo.vPos = { 1475.f, 1280.f, 0.f };
-	CScrollMgr::SetScrollPos(m_tInfo.vPos * 0.7);
+
+	m_pTerrain = dynamic_cast<CTerrain*>(CObjectMgr::GetInstance()->GetTerrain());
+	const vector<TILE_INFO*>& vecTile = m_pTerrain->GetVecTile();
+
+	D3DXVECTOR3 dTemp;
+	for (int k = 0; k < vecTile.size(); k++)
+	{
+		if (vecTile[k]->byOption == FirstStart)
+		{
+			m_tInfo.vPos = { vecTile[k]->vPos.x, vecTile[k]->vPos.y-100, 0.f };
+			dTemp = { vecTile[k]->vPos.x*0.75f, (vecTile[k]->vPos.y - 100)*0.9f, 0.f };
+		}
+	}
+
+	//m_tInfo.vPos = { 1800.f, 2000.f, 0.f };
+
+	CScrollMgr::SetScrollPos(dTemp);
 	m_tInfo.vSize = { 2.5f, 2.5f, 0.f };
 
 	m_tFrame.fStartFrame = 0.f;
 	m_tFrame.fMaxFrameCnt = 4.f; // 계속 FSM함수에서 바꿔야함... 흠...
-	m_fSpeed = 1.f;
+	m_fSpeed = 3.f;
 
 	m_FsmPair.first = BehaviorIdle;
 	m_FsmPair.second = ArrowDOWN;
@@ -243,7 +271,7 @@ void CPlayer::AnimationPicture()
 	APoint[3] = { (float)ObjectActionPlug.left, (float)ObjectActionPlug.bottom };
 	APoint[4] = { (float)ObjectActionPlug.left, (float)ObjectActionPlug.top };
 
-	
+
 	//
 
 	//pTexInfo = m_pTextureMgr->GetTexInfo(L"Idle", L"Front", (int)m_tFrame.fStartFrame);
@@ -259,7 +287,7 @@ void CPlayer::AnimationPicture()
 		D3DCOLOR_ARGB(140, 255, 255, 255));
 
 	m_pDeviceMgr->GetLine()->SetWidth(10.f);
-	m_pDeviceMgr->GetLine()->Draw(APoint, 5, D3DCOLOR_ARGB(255, 0, 255, 0));
+	m_pDeviceMgr->GetLine()->Draw(vPoint, 5, D3DCOLOR_ARGB(255, 0, 255, 0));
 	//m_pDeviceMgr->GetLine()->Draw(APoint, 5, D3DCOLOR_ARGB(255, 0, 255, 0));
 
 
@@ -616,21 +644,25 @@ D3DXVECTOR3 CPlayer::PullPushArrowMove(FsmPair _m_FsmPair)
 				_m_FsmPair.first = BehaviorPull;
 				vPos = { 0, m_fSpeed, 0 };
 				m_tInfo.vPos += { 0, m_fSpeed, 0 };
+				CScrollMgr::SetScrollPos(D3DXVECTOR3(0, m_fSpeed, 0));
 				break;
 			case ArrowDOWN:
 				_m_FsmPair.first = BehaviorPull;
 				vPos = { 0, -m_fSpeed, 0 };
 				m_tInfo.vPos += { 0, -m_fSpeed, 0 };
+				CScrollMgr::SetScrollPos(D3DXVECTOR3(0, -m_fSpeed, 0));
 				break;
 			case ArrowRIGHT:
 				_m_FsmPair.first = BehaviorPull;
 				vPos = { m_fSpeed,0, 0 };
 				m_tInfo.vPos += { m_fSpeed, 0, 0 };
+				CScrollMgr::SetScrollPos(D3DXVECTOR3(m_fSpeed, 0, 0));
 				break;
 			case ArrowLEFT:
 				_m_FsmPair.first = BehaviorPull;
 				vPos = { -m_fSpeed,0, 0 };
 				m_tInfo.vPos += { -m_fSpeed, 0, 0 };
+				CScrollMgr::SetScrollPos(D3DXVECTOR3(-m_fSpeed, 0, 0));
 				break;
 			}
 			return vPos;
@@ -643,21 +675,28 @@ D3DXVECTOR3 CPlayer::PullPushArrowMove(FsmPair _m_FsmPair)
 				_m_FsmPair.first = BehaviorPush;
 				vPos = { 0, -m_fSpeed, 0 };
 				m_tInfo.vPos += { 0, -m_fSpeed, 0 };
+				CScrollMgr::SetScrollPos(D3DXVECTOR3(0, -m_fSpeed, 0));
 				break;
 			case ArrowDOWN:
 				_m_FsmPair.first = BehaviorPush;
 				vPos = { 0, m_fSpeed, 0 };
 				m_tInfo.vPos += { 0, m_fSpeed, 0 };
+				CScrollMgr::SetScrollPos(D3DXVECTOR3(0, m_fSpeed, 0));
+
 				break;
 			case ArrowRIGHT:
 				_m_FsmPair.first = BehaviorPush;
 				vPos = { -m_fSpeed,0, 0 };
 				m_tInfo.vPos += {-m_fSpeed, 0, 0 };
+				CScrollMgr::SetScrollPos(D3DXVECTOR3(-m_fSpeed, 0, 0));
+
 				break;
 			case ArrowLEFT:
 				_m_FsmPair.first = BehaviorPush;
 				vPos = { m_fSpeed,0, 0 };
 				m_tInfo.vPos += { m_fSpeed, 0, 0 };
+				CScrollMgr::SetScrollPos(D3DXVECTOR3(m_fSpeed, 0, 0));
+
 				break;
 			}
 			return vPos;
@@ -736,16 +775,28 @@ void CPlayer::PlayerCollider()
 			NormalWallCol(RectPlayer(&this->m_tInfo), ColTemp);
 		}
 
+		if (vecTile[k]->byDrawID == Potal)
+		{
+			ColTemp = TerrainGet(vecTile[k]);
+			PotalBlock(RectPlayer(&this->m_tInfo), ColTemp);
+		}
 
 	}
 
 	// 움직이는 오브젝트쪽 관련
 	for (int k = 0; k < ObjectvecTile.size(); k++)
 	{
-		if (ObjectvecTile[k]->byOption == MOVEOBJECT)
+		if (ObjectvecTile[k]->byOption == MOVEOBJECT /*|| ObjectvecTile[k]->byOption == Door*/)
 		{
 			ColObjectTemp = TerrainGet(ObjectvecTile[k]);
+
 			PlayerCollider2(RectPlayer(&this->m_tInfo), ColObjectTemp);
+
+			//for (int i = 0; i < ButtonTile.size(); ++i)
+			//{
+			//	ColButtonMoveBlock(TerrainGet(vecTile[ButtonTile[i]]), TerrainGet(ObjectvecTile[k]), vecTile[ButtonTile[i]]);
+			//}
+
 		}
 		if (ObjectvecTile[k]->byOption == MOVEOBJECT && bAction == true)
 		{
@@ -753,7 +804,23 @@ void CPlayer::PlayerCollider()
 
 			ObjectActionPlugCollider(ObjectActionPlug, ColObjectTemp, ObjectvecTile[k]);
 		}
+
+		//if (ObjectvecTile[k]->byOption == MOVEOBJECT)
+		//{
+		//	ColObjectTemp = TerrainGet(ObjectvecTile[k]);
+		//	PlayerCollider2(ColObjectTemp, ColObjectTemp);
+
+		//	ColTemp = TerrainGet(vecTile[k]);
+
+		//	if (vecTile[k]->byOption == IMMORTALWALL)
+		//	{
+		//		PlayerCollider2(ColObjectTemp, ColTemp);
+		//	}
+		//}
 	}
+
+	//움직이는 오브젝트 + 기본맵체크
+
 
 }
 
@@ -775,7 +842,7 @@ void CPlayer::PlayerCollider2(RECT _Player, RECT _Tile)
 	if (IntersectRect(&rc, &(_Player), &(_Tile)))
 	{
 		ColTerPlayer(m_FsmPair, IceBlockTempPair);
-		cout << "충돌난다 휴" << endl;
+		//cout << "충돌난다 휴" << endl;
 
 	}
 	else
@@ -789,10 +856,10 @@ RECT CPlayer::RectPlayer(INFO * m_tInfo)
 {
 	RECT rc =
 	{
-		m_tInfo->vPos.x - TILECX / 2 - 12 - CScrollMgr::GetScrollPos().x,
-		m_tInfo->vPos.y - TILECY / 2 - 8 - CScrollMgr::GetScrollPos().y,
-		m_tInfo->vPos.x + TILECX / 2 + 12 - CScrollMgr::GetScrollPos().x,
-		m_tInfo->vPos.y + TILECY / 2 + 20 - CScrollMgr::GetScrollPos().y
+		m_tInfo->vPos.x - TILECX / 2 /*- 12*/ - CScrollMgr::GetScrollPos().x,
+		m_tInfo->vPos.y - TILECY / 2 /*- 8*/ - CScrollMgr::GetScrollPos().y,
+		m_tInfo->vPos.x + TILECX / 2 /*+ 12*/ - CScrollMgr::GetScrollPos().x,
+		m_tInfo->vPos.y + TILECY / 2 /*+ 20*/ - CScrollMgr::GetScrollPos().y
 	};
 	return rc;
 }
@@ -930,10 +997,10 @@ void CPlayer::vObjectActionPlug(INFO * m_tInfo, FsmPair _m_FsmPair)
 
 	RECT rc =
 	{
-		m_tInfo->vPos.x - TILECX / 2  - CScrollMgr::GetScrollPos().x +fX,
-		m_tInfo->vPos.y - TILECY / 2  - CScrollMgr::GetScrollPos().y +fY,
-		m_tInfo->vPos.x + TILECX / 2  - CScrollMgr::GetScrollPos().x +fX,
-		m_tInfo->vPos.y + TILECY / 2  - CScrollMgr::GetScrollPos().y +fY
+		m_tInfo->vPos.x - TILECX / 2 - CScrollMgr::GetScrollPos().x + fX,
+		m_tInfo->vPos.y - TILECY / 2 - CScrollMgr::GetScrollPos().y + fY,
+		m_tInfo->vPos.x + TILECX / 2 - CScrollMgr::GetScrollPos().x + fX,
+		m_tInfo->vPos.y + TILECY / 2 - CScrollMgr::GetScrollPos().y + fY
 	};
 
 
@@ -942,12 +1009,12 @@ void CPlayer::vObjectActionPlug(INFO * m_tInfo, FsmPair _m_FsmPair)
 	ObjectActionPlug = rc;
 
 
-	cout << "----------------------------------------------------" << endl;
-	cout << "ObjectActionPlug  : " << ObjectActionPlug.top <<endl;
-	cout << "ObjectActionPlug  : " << ObjectActionPlug.bottom <<endl;
-	cout << "ObjectActionPlug  : " << ObjectActionPlug.right <<endl;
-	cout << "ObjectActionPlug  : " << ObjectActionPlug.left <<endl;
-	cout << "----------------------------------------------------" << endl;
+	//cout << "----------------------------------------------------" << endl;
+	//cout << "ObjectActionPlug  : " << ObjectActionPlug.top << endl;
+	//cout << "ObjectActionPlug  : " << ObjectActionPlug.bottom << endl;
+	//cout << "ObjectActionPlug  : " << ObjectActionPlug.right << endl;
+	//cout << "ObjectActionPlug  : " << ObjectActionPlug.left << endl;
+	//cout << "----------------------------------------------------" << endl;
 
 
 
@@ -960,7 +1027,7 @@ void CPlayer::ObjectActionPlugCollider(RECT _ActionPlug, RECT _Tile, TILE_INFO *
 	RECT rc = {};
 	if (IntersectRect(&rc, &(_ActionPlug), &(_Tile)))
 	{
-		cout << "여기충돌하냐??? " << endl;
+		//cout << "여기충돌하냐??? " << endl;
 		PullPushCheck = true;
 		PullPushArrow(m_FsmPair, _vecTile);
 		//cout << PullPushCheck << endl;
@@ -1049,10 +1116,10 @@ void CPlayer::RectImotalPlayer(INFO * m_tInfo, FsmPair _m_FsmPair)
 
 	RECT rc =
 	{
-		m_tInfo->vPos.x - TILECX / 2 + fX / 2,
-		m_tInfo->vPos.y - TILECY / 2 + fY / 2,
-		m_tInfo->vPos.x + TILECX / 2 + fX / 2,
-		m_tInfo->vPos.y + TILECY / 2 + fY / 2
+		m_tInfo->vPos.x - TILECX / 2 + fX / 2 - CScrollMgr::GetScrollPos().x,
+		m_tInfo->vPos.y - TILECY / 2 + fY / 2 - CScrollMgr::GetScrollPos().y,
+		m_tInfo->vPos.x + TILECX / 2 + fX / 2 - CScrollMgr::GetScrollPos().x,
+		m_tInfo->vPos.y + TILECY / 2 + fY / 2 - CScrollMgr::GetScrollPos().y
 	};
 
 	BlockCheckWall = rc;
@@ -1078,6 +1145,28 @@ void CPlayer::NormalWallCol(RECT _Player, RECT _Tile)
 	else
 	{
 		//bNomalWallCheck = false;
+	}
+}
+
+void CPlayer::ColButtonMoveBlock(RECT _Button, RECT _MoveBlock, TILE_INFO* _vecTile)
+{
+	RECT rc = {};
+	if (IntersectRect(&rc, &(_Button), &(_MoveBlock)))
+	{
+		_vecTile->byDrawID = 51;
+		_vecTile->byOption = NormalWall;
+	}
+}
+
+void CPlayer::PotalBlock(RECT _Player, RECT _Tile)
+{
+	RECT rc = {};
+
+	if (IntersectRect(&rc, &(_Player), &(_Tile)))
+	{
+		m_pSceneMgr->SceneChange(CSceneMgr::STAGE02);
+
+		cout << "충돌은 일어남 포탈" << endl;
 	}
 }
 

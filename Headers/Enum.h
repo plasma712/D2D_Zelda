@@ -8,7 +8,13 @@ enum eBlockType
 	IMMORTALWALL,
 	MOVEOBJECT,
 	ICEBLOCK,
-	NormalWall
+	NormalWall,
+	OneMoreButtonWall,
+	ManyButtonWall,
+	FireObject,
+	Door,
+	Potal,
+	FirstStart
 };
 enum eColDir
 {

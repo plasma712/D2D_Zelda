@@ -62,7 +62,7 @@ void ObjectTerrain::Render()
 
 	for (size_t i = 0; i < m_vecTile.size(); ++i)
 	{
-		if (m_vecTile[i]->byOption == MOVEOBJECT)
+		if (m_vecTile[i]->byOption == MOVEOBJECT || m_vecTile[i]->byOption == Door)
 		{
 			ColTemp = ObjectTerrainGet(m_vecTile[i]);
 			vPoint[0] = { (float)ColTemp.left, (float)ColTemp.top };

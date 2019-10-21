@@ -157,5 +157,16 @@ public:
 	void NormalWallCol(RECT _Player, RECT _Tile);
 	bool bNomalWallCheck = false;
 
+	////////////////////////////////////////////////////////
+
+	void ColButtonMoveBlock(RECT _Button , RECT _MoveBlock, TILE_INFO* _vecTile);
+
+
+
+	void PotalBlock(RECT _Player, RECT _Tile);
+	CSceneMgr*			m_pSceneMgr;
+
+	vector<int> ButtonTile;
+
 };
 

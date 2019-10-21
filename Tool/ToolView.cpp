@@ -179,7 +179,7 @@ void CToolView::OnInitialUpdate()
 	hr = m_pTextureMgr->LoadTexture(CTextureMgr::MULTI_TEXTURE,
 		//L"../Texture/Stage/Terrain/Tile/Tile%d.png",
 		L"../Texture/MapBlock/MainStage01/Tile%d.png",
-		L"MainStage01", L"Tile", 53);
+		L"MainStage01", L"Tile", 57);
 	FAILED_CHECK_MSG(hr, L"Terrain Tile Texture Load Failed");
 	m_pTerrain = CTerrain::Create(this);
 	NULL_CHECK_MSG(m_pTerrain, L"Terrain Create Failed");
@@ -205,7 +205,7 @@ void CToolView::OnLButtonDown(UINT nFlags, CPoint point)
 	NULL_CHECK(pMyForm);
 
 	int iDrawID = pMyForm->m_MapTool.m_iDrawID;
-	m_pTerrain->TileChange(vMouse, iDrawID, MOVEOBJECT);
+	m_pTerrain->TileChange(vMouse, iDrawID, FirstStart);
 
 	// 화면 갱신 함수. WM_PAINT 메시지 발생.
 	Invalidate(FALSE);
@@ -239,7 +239,7 @@ void CToolView::OnMouseMove(UINT nFlags, CPoint point)
 		NULL_CHECK(pMyForm);
 
 		int iDrawID = pMyForm->m_MapTool.m_iDrawID;
-		m_pTerrain->TileChange(vMouse, iDrawID, MOVEOBJECT);
+		m_pTerrain->TileChange(vMouse, iDrawID, FirstStart);
 
 		// 화면 갱신 함수. WM_PAINT 메시지 발생.
 		Invalidate(FALSE);
